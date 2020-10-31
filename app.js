@@ -5,6 +5,10 @@ var logger = require('morgan');
 
 var apiRouter = require('./routes/api');
 
+const { connect } = require('./config/database');
+
+connect();
+
 var app = express();
 
 app.use(logger('dev'));
