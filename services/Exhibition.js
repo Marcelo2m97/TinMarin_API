@@ -58,4 +58,29 @@ ExhibitionService.create = async ({ name, description, images, sponsorName, spon
     }
 }
 
+ExhibitionService.getAll = async() => {
+    let serviceResponse = {
+        success: true,
+        content: {}
+    }
+
+    try {
+        const exhibitions = await ExhibitionModel.find();
+        if (!exhibitions) {
+            serviceResponse = {
+                success: false,
+                content: {
+                    error: 'No exhibition found.'
+                }
+            }
+        } else {
+            serviceResponse.content = exhibitions;
+        }
+
+        return serviceResponse;
+    } catch(error) {
+        throw new Error('Internal Server Error')
+    }
+}
+
 module.exports = ExhibitionService;

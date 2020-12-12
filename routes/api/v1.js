@@ -3,6 +3,6 @@ const router = express.Router();
 
 const ExhibitionRouter = require('./v1/Exhibition');
 
-router.use("/exhibition", ExhibitionRouter);
+router.use("/exhibitions", ExhibitionRouter);
 
 module.exports = router;

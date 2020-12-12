@@ -25,4 +25,21 @@ ExhibitionController.addNewExhibition = async (req, res) => {
   }
 }
 
+ExhibitionController.findAll = async (req, res) => {
+  
+  try{
+    const exhibitionsFound = await ExhibitionService.getAll();
+  
+    if (!exhibitionsFound.success) {
+      return res.status(404).json(exhibitionsFound.content);
+    }
+  
+    return res.status(200).json(exhibitionsFound.content);
+  } catch(error) {
+    return res.status(500).json({
+      error: 'Internal Server Error.'
+    })
+  }
+}
+
 module.exports = ExhibitionController;
