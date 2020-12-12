@@ -83,4 +83,29 @@ ExhibitionService.getAll = async() => {
     }
 }
 
+ExhibitionService.findOneById = async (_id) => {
+    let serviceResponse = {
+        success: true,
+        content: {}
+    }
+
+    try {
+        const exhibition = await ExhibitionModel.findOne({ _id: _id }).exec();
+        if (!exhibition) {
+            serviceResponse = {
+                success: false,
+                content: {
+                    error: 'Exhibition not found.'
+                }
+            }
+        } else {
+            serviceResponse.content = exhibition;
+        }
+
+        return serviceResponse;
+    } catch(error) {
+        throw new Error('Internal Server Error');
+    }
+}
+
 module.exports = ExhibitionService;

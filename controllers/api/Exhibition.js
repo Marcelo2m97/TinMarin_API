@@ -3,7 +3,6 @@ const ExhibitionService = require('./../../services/Exhibition');
 const ExhibitionController = {};
 
 ExhibitionController.addNewExhibition = async (req, res) => {
-
   const fieldsValidation = ExhibitionService.verifyFields(req.body);
 
   if (!fieldsValidation.success) {
@@ -26,7 +25,6 @@ ExhibitionController.addNewExhibition = async (req, res) => {
 }
 
 ExhibitionController.findAll = async (req, res) => {
-  
   try{
     const exhibitionsFound = await ExhibitionService.getAll();
   
@@ -39,6 +37,23 @@ ExhibitionController.findAll = async (req, res) => {
     return res.status(500).json({
       error: 'Internal Server Error.'
     })
+  }
+}
+
+ExhibitionController.findOneById = async (req, res) => {
+  const { _id } = req.params;
+
+  try {
+    const exhibitionFound = await ExhibitionService.findOneById(_id);
+    if (!exhibitionFound.success) {
+      return res.status(404).json(exhibitionFound.content);
+    }
+
+    return res.status(200).json(exhibitionFound.content);
+  } catch(error) {
+    return res.status(500).json({
+      error: 'Internal Server Error'
+    });
   }
 }
 
