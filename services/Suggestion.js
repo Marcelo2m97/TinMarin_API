@@ -34,7 +34,6 @@ SuggestionService.create = async ({ suggestionType, suggestion }) => {
   });
   try {
     const suggestionSaved = await newSuggestion.save();
-    console.log(suggestionSaved);
     if (!suggestionSaved) {
       serviceResponse = {
         success: false,
@@ -49,6 +48,30 @@ SuggestionService.create = async ({ suggestionType, suggestion }) => {
     return serviceResponse;
   } catch(error) {
     throw new Error('Internal Server Error.')
+  }
+}
+
+SuggestionService.findAll = async () => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+  try {
+    const suggestions = await SuggestionModel.find();
+    if (!suggestions) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'No suggestion found.'
+        }
+      };
+    } else {
+      serviceResponse.content = suggestions;
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error.');
   }
 }
 
