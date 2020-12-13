@@ -51,4 +51,28 @@ SuggestionTypeService.create = async ({ name }) => {
   }
 }
 
+SuggestionTypeService.findAll = async () => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+  try {
+    const suggestionsTypes = await SuggestionTypeModel.find();
+    if (!suggestionsTypes) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'No suggestion type found.'
+        }
+      }
+    } else {
+      serviceResponse.content = suggestionsTypes;
+    }
+
+    return serviceResponse
+  } catch(error) {
+    throw new Error('Internal Server Error.')
+  }
+}
+
 module.exports = SuggestionTypeService;
