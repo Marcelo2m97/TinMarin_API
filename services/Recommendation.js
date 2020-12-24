@@ -52,4 +52,29 @@ RecommendationService.create = async ({ title, description, source, image }) => 
 
 }
 
+RecommendationService.findAll = async () => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  };
+
+  try {
+    const recommendations = await RecommendationModel.find();
+    if (!recommendations) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'No recommendations found.'
+        }
+      };
+    } else {
+      serviceResponse.content = recommendations;
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error.');
+  }
+}
+
 module.exports = RecommendationService;

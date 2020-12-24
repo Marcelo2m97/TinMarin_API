@@ -3,6 +3,7 @@ const router = express.Router();
 
 const RecommendationController = require('./../../../controllers/api/Recommendation');
 
-router.use('/', RecommendationController.create);
+router.post('/', RecommendationController.create);
+router.get('/', RecommendationController.findAll);
 
 module.exports = router;
