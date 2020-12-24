@@ -51,4 +51,29 @@ RecommendedWebsiteService.create = async ({ url, image, title }) => {
   }
 }
 
+RecommendedWebsiteService.findAll = async () => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const recommendedWebsites = await RecommendedWebsiteModel.find();
+    if (!recommendedWebsites) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'No recommended websites found'
+        }
+      };
+    } else {
+      serviceResponse.content = recommendedWebsites;
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error(error);
+  }
+}
+
 module.exports = RecommendedWebsiteService;

@@ -11,6 +11,6 @@ router.use('/exhibitions', ExhibitionRouter);
 router.use('/suggestiontypes', SuggestionTypeRouter);
 router.use('/suggestions', SuggestionRouter);
 router.use('/recommendations', RecommendationRouter);
-router.use('/recommended-website', RecommendedWebsiteRouter);
+router.use('/recommended-websites', RecommendedWebsiteRouter);
 
 module.exports = router;
