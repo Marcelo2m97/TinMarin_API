@@ -1,18 +1,20 @@
 const express = require('express');
 const router = express.Router();
 
+const EducationArea =require('./v1/EducationArea');
 const ExhibitionRouter = require('./v1/Exhibition');
-const SuggestionTypeRouter = require('./v1/SuggestionType');
-const SuggestionRouter = require('./v1/Suggestion');
+const FAQRouter = require('./v1/FAQ');
 const RecommendationRouter = require('./v1/Recommendation');
 const RecommendedWebsiteRouter = require('./v1/RecommendedWebsite');
-const FAQRouter = require('./v1/FAQ');
+const SuggestionTypeRouter = require('./v1/SuggestionType');
+const SuggestionRouter = require('./v1/Suggestion');
 
+router.use('/education-areas', EducationArea);
 router.use('/exhibitions', ExhibitionRouter);
-router.use('/suggestiontypes', SuggestionTypeRouter);
-router.use('/suggestions', SuggestionRouter);
+router.use('/faqs', FAQRouter);
 router.use('/recommendations', RecommendationRouter);
 router.use('/recommended-websites', RecommendedWebsiteRouter);
-router.use('/faqs', FAQRouter);
+router.use('/suggestiontypes', SuggestionTypeRouter);
+router.use('/suggestions', SuggestionRouter);
 
 module.exports = router;
