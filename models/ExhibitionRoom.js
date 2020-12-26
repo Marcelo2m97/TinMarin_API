@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const ExhibitionRoomSchema = new Schema({
     roomCode: {
         type: Number,
-        required: true
+        required: true,
+        unique: true
     },
     exhibitions: [{
         type: mongoose.Schema.Types.ObjectId,
