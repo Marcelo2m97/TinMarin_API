@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const ExhibitionRoomSchema = new Schema({
     roomCode: {
-        type: Number,
+        type: String,
         required: true,
         unique: true
     },
