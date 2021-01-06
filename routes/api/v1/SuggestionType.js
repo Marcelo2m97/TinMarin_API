@@ -5,5 +5,6 @@ const SuggestionTypeController = require('./../../../controllers/api/SuggestionT
 
 router.post('/', SuggestionTypeController.create);
 router.get('/', SuggestionTypeController.findAll);
+router.delete('/:_id', SuggestionTypeController.remove);
 
 module.exports = router;

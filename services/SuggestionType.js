@@ -73,6 +73,51 @@ SuggestionTypeService.findAll = async () => {
   } catch(error) {
     throw new Error('Internal Server Error.')
   }
+
+}
+
+SuggestionTypeService.findOneById = async (_id) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  const suggestionTypeFound = await SuggestionTypeModel.findById(_id);
+  if (!suggestionTypeFound) {
+    serviceResponse = {
+      success: false,
+      content: {
+        error: 'Suggestion Type not found.'
+      }
+    }
+  }
+
+  return serviceResponse;
+}
+
+SuggestionTypeService.remove = async (_id) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const suggestionsTypeDeleted = await SuggestionTypeModel.findByIdAndDelete(_id).exec();
+    console.log(suggestionsTypeDeleted);
+    if (!suggestionsTypeDeleted) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Something went wrong. Try again later.'
+        }
+      }
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Interal Server Error');
+  }
+
 }
 
 module.exports = SuggestionTypeService;

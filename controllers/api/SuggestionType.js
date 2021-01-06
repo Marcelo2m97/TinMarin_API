@@ -1,4 +1,5 @@
 const SuggestionTypeService = require('./../../services/SuggestionType');
+const { verifyId } = require('./../../utils/MongoUtils');
 
 const SuggestionTypeController = {}
 
@@ -35,8 +36,29 @@ SuggestionTypeController.findAll = async (req, res) => {
       error: 'Internal Server Error'
     });
   }
+}
 
-  
+SuggestionTypeController.remove = async (req, res) => {
+  if (!verifyId(req.params._id)) {
+    res.status(400).json({
+      error: 'Invalid id.'
+    });
+  }
+  try {
+    const suggestionType = await SuggestionTypeService.findOneById(req.params._id);
+    if (!suggestionType.success) {
+      return res.status(404).json(suggestionType.content);
+    }
+    const suggestionTypeDeleted = await SuggestionTypeService.remove(req.params._id);
+    if (!suggestionTypeDeleted.success) {
+      return res.status(409).json(suggestionTypeDeleted);
+    }
+    return res.status(204).json(suggestionTypeDeleted.content);
+  } catch(error) {
+    return res.status(500).json({
+      error: 'Internal Server Error.'
+    });
+  }
 }
 
 module.exports = SuggestionTypeController;
