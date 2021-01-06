@@ -1,4 +1,5 @@
 const ExhibitionRoomModel = require('./../models/ExhibitionRoom');
+const ExhibitionModel = require('./../models/Exhibition');
 
 const ExhibitionRoomService = {};
 
@@ -8,6 +9,8 @@ ExhibitionRoomService.verifyFields = ({ roomCode, exhibitions }) => {
     content: {}
   }
 
+  const roomCodeRegExp = '[A-Za-z0-9]';
+
   if (!roomCode || !exhibitions) {
     serviceResponse = {
       success: false,
@@ -15,6 +18,15 @@ ExhibitionRoomService.verifyFields = ({ roomCode, exhibitions }) => {
         error: 'Missing required fields. Request needs a room code and a list of exhibitions.'
       }
     };
+  }
+
+  if (!roomCode.match(roomCodeRegExp)) {
+    serviceResponse = {
+      success: false,
+      content: {
+        error: 'Room code must not have spaces between words, punctuation or special characters.'
+      }
+    }
   }
 
   return serviceResponse;
@@ -57,8 +69,11 @@ ExhibitionRoomService.findOneExhibitionRoomByRoomCode = async (roomCode) => {
   }
 
   try {
-    const roomExhibition = await ExhibitionRoomModel.findOne({ roomCode: roomCode }).exec();
-    if (!roomExhibition) {
+    const exhibitionRoom = await await ExhibitionRoomModel.findOne({ roomCode: roomCode }).populate({ 
+      path: 'exhibitions',
+      model: 'Exhibition'
+    }).exec();
+    if (!exhibitionRoom) {
       serviceResponse = {
         success: false,
         content: {
@@ -67,7 +82,7 @@ ExhibitionRoomService.findOneExhibitionRoomByRoomCode = async (roomCode) => {
       }
       return serviceResponse;
     } else {
-      serviceResponse.content = roomExhibition;
+      serviceResponse.content = exhibitionRoom;
       return serviceResponse;
     }
   } catch(error) {

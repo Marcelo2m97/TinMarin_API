@@ -103,7 +103,6 @@ SuggestionTypeService.remove = async (_id) => {
 
   try {
     const suggestionsTypeDeleted = await SuggestionTypeModel.findByIdAndDelete(_id).exec();
-    console.log(suggestionsTypeDeleted);
     if (!suggestionsTypeDeleted) {
       serviceResponse = {
         success: false,
