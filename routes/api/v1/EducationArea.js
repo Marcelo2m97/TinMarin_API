@@ -5,5 +5,6 @@ const EducationAreaController = require('./../../../controllers/api/EducationAre
 
 router.post('/', EducationAreaController.create);
 router.get('/', EducationAreaController.findAll);
+router.delete('/:_id', EducationAreaController.remove);
 
 module.exports = router;

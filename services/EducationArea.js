@@ -1,5 +1,4 @@
 const EducationArea = require('./../models/EducationArea');
-const EducationAreaModel = require('./../models/EducationArea');
 
 const EducationAreaService = {};
 
@@ -53,7 +52,7 @@ EducationAreaService.findAll = async () => {
     content: {}
   }
   try {
-    const educationAreas = await EducationAreaModel.find();
+    const educationAreas = await EducationArea.find();
     if (!educationAreas) {
       serviceResponse = {
         success: false,
@@ -68,6 +67,51 @@ EducationAreaService.findAll = async () => {
     return serviceResponse;
   } catch(error) {
     throw new Error(error);
+  }
+}
+
+EducationAreaService.findOneById = async (_id) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const educationAreaFound = await EducationArea.findById(_id);
+    if (!educationAreaFound) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Education area not found.'
+        }
+      };
+    }
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error');
+  }
+} 
+
+EducationAreaService.remove = async (_id) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const educationAreaDeleted = await EducationArea.findByIdAndDelete(_id).exec();
+    if (!educationAreaDeleted) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Something went wrong.'
+        }
+      }
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error.')
   }
 }
 

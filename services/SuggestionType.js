@@ -82,17 +82,21 @@ SuggestionTypeService.findOneById = async (_id) => {
     content: {}
   }
 
-  const suggestionTypeFound = await SuggestionTypeModel.findById(_id);
-  if (!suggestionTypeFound) {
-    serviceResponse = {
-      success: false,
-      content: {
-        error: 'Suggestion Type not found.'
+  try {
+    const suggestionTypeFound = await SuggestionTypeModel.findById(_id);
+    if (!suggestionTypeFound) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Suggestion Type not found.'
+        }
       }
     }
+  
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error.')
   }
-
-  return serviceResponse;
 }
 
 SuggestionTypeService.remove = async (_id) => {
