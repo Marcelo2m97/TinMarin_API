@@ -29,8 +29,9 @@ const ExhibitionSchema = new Schema({
     maximumAge: {
         type: Number,
         default: 0
-    }
-
+    },
+    duration: Number,
+    capacity: Number,
 }, {
     timestamps: true,
 });

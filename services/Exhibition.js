@@ -2,7 +2,7 @@ const ExhibitionModel = require('./../models/Exhibition');
 
 const ExhibitionService = {};
 
-ExhibitionService.verifyFields = ({ name, description, images, sponsorName, educationArea, minimunAge, maximumAge }) => {
+ExhibitionService.verifyFields = ({ name, description, images, sponsorName, educationArea, minimunAge, maximumAge, duration, capacity }) => {
     let serviceResponse = {
         success: true,
         content: {
@@ -10,7 +10,7 @@ ExhibitionService.verifyFields = ({ name, description, images, sponsorName, educ
         }
     }
 
-    if (!name || !description || !images || !sponsorName || !educationArea || !minimunAge || !maximumAge) {
+    if (!name || !description || !images || !sponsorName || !educationArea || !minimunAge || !maximumAge || !duration || !capacity) {
         serviceResponse = {
             success: false,
             content: {
@@ -22,7 +22,7 @@ ExhibitionService.verifyFields = ({ name, description, images, sponsorName, educ
     return serviceResponse
 }
 
-ExhibitionService.create = async ({ name, description, images, sponsorName, sponsorLogo, educationArea, minimunAge, maximumAge }) => {
+ExhibitionService.create = async ({ name, description, images, sponsorName, sponsorLogo, educationArea, minimunAge, maximumAge, duration, capacity }) => {
     let serviceResponse = {
         success: true,
         content: {
@@ -39,7 +39,9 @@ ExhibitionService.create = async ({ name, description, images, sponsorName, spon
             sponsorLogo,
             educationArea,
             minimunAge,
-            maximumAge
+            maximumAge,
+            duration,
+            capacity
         });
 
         const newExhibitionWasCreated = await newExhibition.save();
