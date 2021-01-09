@@ -10,7 +10,7 @@ ExhibitionService.verifyFields = ({ name, description, images, sponsorName, educ
         }
     }
 
-    if (!name || !description || !images || !sponsorName || !educationArea || !minimunAge || !maximumAge || !duration || !capacity) {
+    if (!name || !description || !images || !educationArea || !minimunAge || !maximumAge || !duration || !capacity) {
         serviceResponse = {
             success: false,
             content: {
