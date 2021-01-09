@@ -26,7 +26,7 @@ EducationAreaService.create = async ({ name }) => {
     content: {}
   };
 
-  const educationArea = new EducationAreaModel({ name });
+  const educationArea = new EducationArea({ name });
   try {
     const educationAreaCreated = await educationArea.save();
     if (!educationAreaCreated) {

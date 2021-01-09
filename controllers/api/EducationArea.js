@@ -56,7 +56,9 @@ EducationAreaController.remove = async (req, res) => {
 
     return res.status(204).json(educationAreaDeleted.content);
   } catch(error) {
-
+    return res.status(500).json({
+      error: 'Internal Server Error.'
+    })
   }
 }
 
