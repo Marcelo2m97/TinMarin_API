@@ -2,7 +2,7 @@ const ExhibitionModel = require('./../models/Exhibition');
 
 const ExhibitionService = {};
 
-ExhibitionService.verifyFields = ({ name, description, images, sponsorName, educationArea, minimunAge, maximumAge, duration, capacity }) => {
+ExhibitionService.verifyFields = ({ name, description, images, educationArea, minimunAge, maximumAge, duration, capacity }) => {
     let serviceResponse = {
         success: true,
         content: {
