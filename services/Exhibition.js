@@ -110,4 +110,28 @@ ExhibitionService.findOneById = async (_id) => {
     }
 }
 
+ExhibitionService.remove = async (_id) => {
+    let serviceResponse = {
+        success: true,
+        content: {}
+    }
+
+    try {
+        const exhibitionDeleted = await ExhibitionModel.findByIdAndDelete(_id).exec();
+        if (!exhibitionDeleted) {
+            serviceResponse = {
+                success: false,
+                content: {
+                    error: 'Something went wrong. Try again later.'
+                }
+            }
+        }
+
+        return serviceResponse;
+    } catch(error) {
+        throw new Error('Interal Server Error');
+    }
+
+}
+
 module.exports = ExhibitionService;
