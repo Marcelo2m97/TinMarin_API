@@ -36,4 +36,23 @@ FAQController.findAll = async (req, res) => {
   }
 }
 
+FAQController.remove = async (req, res) => {
+  try {
+    const faq = await FAQService.findOneById(req.params._id);
+    if (!faq.success) {
+      return res.status(404).json(faq.content);
+    }
+    const faqDeleted = await FAQService.remove(req.params._id);
+    if (!faqDeleted.success) {
+      return res.status(409).json(faq.content);
+    }
+
+    return res.status(204).json(faq.content);
+  } catch(error) {
+    return res.status(500).json({
+      error: 'Internal Server Error.'
+    });
+  }
+}
+
 module.exports = FAQController;

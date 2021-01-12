@@ -74,5 +74,53 @@ FAQService.findAll = async () => {
     throw new Error(error);
   }
 }
+FAQService.findOneById = async (_id) => {
+  let serviceResponse = {
+      success: true,
+      content: {}
+  }
+
+  try {
+      const faq = await FAQModel.findOne({ _id: _id }).exec();
+      if (!faq) {
+          serviceResponse = {
+              success: false,
+              content: {
+                  error: 'Exhibition not found.'
+              }
+          }
+      } else {
+          serviceResponse.content = faq;
+      }
+
+      return serviceResponse;
+  } catch(error) {
+      throw new Error('Internal Server Error');
+  }
+}
+
+FAQService.remove = async (_id) => {
+  let serviceResponse = {
+      success: true,
+      content: {}
+  }
+
+  try {
+      const faqDeleted = await FAQModel.findByIdAndDelete(_id).exec();
+      if (!faqDeleted) {
+          serviceResponse = {
+              success: false,
+              content: {
+                  error: 'Something went wrong. Try again later.'
+              }
+          }
+      }
+
+      return serviceResponse;
+  } catch(error) {
+      throw new Error('Interal Server Error');
+  }
+
+}
 
 module.exports = FAQService;
