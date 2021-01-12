@@ -37,4 +37,23 @@ SuggestionController.findAll = async (req, res) => {
   }
 }
 
+SuggestionController.remove = async (req, res) => {
+  try {
+    const suggestion = await SuggestionService.findOneById(req.params._id);
+    if (!suggestion.success) {
+      return res.status(404).json(suggestion.content);
+    }
+    const suggestionDeleted = await SuggestionService.remove(req.params._id);
+    if (!suggestionDeleted.success) {
+      return res.status(409).json(suggestionDeleted.content);
+    }
+
+    return res.status(204).json(suggestionDeleted.content);
+  } catch(error) {
+    return res.status(500).json({
+      error: 'Internal Server Error.'
+    });
+  }
+}
+
 module.exports = SuggestionController;
