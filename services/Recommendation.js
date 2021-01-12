@@ -106,9 +106,9 @@ RecommendationService.remove = async (_id) => {
   let serviceResponse = {
     success: true,
     content: {}
-}
+  }
 
-try {
+  try {
     const recommendationDeleted = await RecommendationModel.findByIdAndDelete(_id).exec();
     if (!recommendationDeleted) {
         serviceResponse = {
