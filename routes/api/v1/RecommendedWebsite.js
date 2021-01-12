@@ -5,5 +5,6 @@ const RecommendedWebsiteController = require('./../../../controllers/api/Recomme
 
 router.post('/', RecommendedWebsiteController.create);
 router.get('/', RecommendedWebsiteController.findAll);
+router.delete('/:_id', RecommendedWebsiteController.remove);
 
 module.exports = router;

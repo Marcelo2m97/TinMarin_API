@@ -36,4 +36,23 @@ RecommendedWebsiteController.findAll = async (req, res) => {
   }
 }
 
+RecommendedWebsiteController.remove = async (req, res) => {
+  try {
+    const recommendedWebsite = await RecommendedWebsiteService.findOneById(req.params._id);
+    if (!recommendedWebsite.success) {
+      return res.status(404).json(recommendedWebsite.content);
+    }
+    const recommendedWebsiteDeleted = await RecommendedWebsiteService.remove(req.params._id);
+    if (!recommendedWebsiteDeleted.success) {
+      return res.status(409).json(recommendedWebsiteDeleted.content);
+    }
+
+    return res.status(204).json(recommendedWebsiteDeleted.content);
+  } catch(error) {
+    return res.status(500).json({
+      error: 'Internal Server Error.'
+    });
+  }
+}
+
 module.exports = RecommendedWebsiteController;

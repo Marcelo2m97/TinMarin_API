@@ -76,4 +76,52 @@ RecommendedWebsiteService.findAll = async () => {
   }
 }
 
+RecommendedWebsiteService.findOneById = async (_id) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+      const recommendedWebsite = await RecommendedWebsiteModel.findOne({ _id: _id }).exec();
+      if (!recommendedWebsite) {
+          serviceResponse = {
+              success: false,
+              content: {
+                  error: 'Exhibition not found.'
+              }
+          }
+      } else {
+          serviceResponse.content = recommendedWebsite;
+      }
+
+      return serviceResponse;
+  } catch(error) {
+      throw new Error('Internal Server Error');
+  }
+}
+
+RecommendedWebsiteService.remove = async (_id) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const recommendedWebsiteDeleted = await RecommendedWebsiteModel.findByIdAndDelete(_id).exec();
+    if (!recommendedWebsiteDeleted) {
+        serviceResponse = {
+            success: false,
+            content: {
+                error: 'Something went wrong. Try again later.'
+            }
+        }
+    }
+
+    return serviceResponse;
+  } catch(error) {
+      throw new Error('Interal Server Error');
+  }
+}
+
 module.exports = RecommendedWebsiteService;
