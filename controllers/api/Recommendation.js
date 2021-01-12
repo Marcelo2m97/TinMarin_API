@@ -35,4 +35,22 @@ RecommendationController.findAll = async (req, res) => {
   }
 }
 
+RecommendationController.remove = async (req, res) => {
+  try {
+    const recommendation = await RecommendationService.findOneById(req.params._id);
+    if (!recommendation.success) {
+      return res.status(404).json(recommendation.content);
+    }
+    const recommendationDeleted = await RecommendationService.remove(req.params._id);
+    if (!recommendationDeleted.success) {
+      return res.status(409).json(recommendationDeleted.content);
+    }
+
+    return res.status(204).json(recommendationDeleted.content);
+  } catch(error) {
+    return res.status(500).json({
+      error: 'Internal Server Error.'
+    });
+  }
+}
 module.exports = RecommendationController;

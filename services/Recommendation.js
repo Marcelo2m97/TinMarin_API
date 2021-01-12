@@ -77,4 +77,52 @@ RecommendationService.findAll = async () => {
   }
 }
 
+RecommendationService.findOneById = async (_id) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+      const recommendation = await RecommendationModel.findOne({ _id: _id }).exec();
+      if (!recommendation) {
+          serviceResponse = {
+              success: false,
+              content: {
+                  error: 'Exhibition not found.'
+              }
+          }
+      } else {
+          serviceResponse.content = recommendation;
+      }
+
+      return serviceResponse;
+  } catch(error) {
+      throw new Error('Internal Server Error');
+  }
+}
+
+RecommendationService.remove = async (_id) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+}
+
+try {
+    const recommendationDeleted = await RecommendationModel.findByIdAndDelete(_id).exec();
+    if (!recommendationDeleted) {
+        serviceResponse = {
+            success: false,
+            content: {
+                error: 'Something went wrong. Try again later.'
+            }
+        }
+    }
+
+    return serviceResponse;
+  } catch(error) {
+      throw new Error('Interal Server Error');
+  }
+}
+
 module.exports = RecommendationService;

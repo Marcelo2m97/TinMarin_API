@@ -5,5 +5,6 @@ const RecommendationController = require('./../../../controllers/api/Recommendat
 
 router.post('/', RecommendationController.create);
 router.get('/', RecommendationController.findAll);
+router.delete('/:_id', RecommendationController.remove);
 
 module.exports = router;
