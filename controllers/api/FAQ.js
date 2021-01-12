@@ -44,10 +44,10 @@ FAQController.remove = async (req, res) => {
     }
     const faqDeleted = await FAQService.remove(req.params._id);
     if (!faqDeleted.success) {
-      return res.status(409).json(faq.content);
+      return res.status(409).json(faqDeleted.content);
     }
 
-    return res.status(204).json(faq.content);
+    return res.status(204).json(faqDeleted.content);
   } catch(error) {
     return res.status(500).json({
       error: 'Internal Server Error.'
