@@ -1,5 +1,4 @@
 const ExhibitionRoomModel = require('./../models/ExhibitionRoom');
-const ExhibitionModel = require('./../models/Exhibition');
 
 const ExhibitionRoomService = {};
 
@@ -9,7 +8,7 @@ ExhibitionRoomService.verifyFields = ({ roomCode, exhibitions }) => {
     content: {}
   }
 
-  const roomCodeRegExp = '[A-Za-z0-9]';
+  const roomCodeRegExp = new RegExp('^[a-zA-Z0-9]*$', 'g');
 
   if (!roomCode || !exhibitions) {
     serviceResponse = {
@@ -19,8 +18,8 @@ ExhibitionRoomService.verifyFields = ({ roomCode, exhibitions }) => {
       }
     };
   }
-
-  if (!roomCode.match(roomCodeRegExp)) {
+  console.log(roomCodeRegExp.test(roomCode));
+  if (!roomCodeRegExp.test(roomCode)) {
     serviceResponse = {
       success: false,
       content: {
@@ -116,6 +115,55 @@ ExhibitionRoomService.findAll = async () => {
   } catch(error) {
     throw new Error('Internal Server Error.')
   }
+}
+
+ExhibitionRoomService.findOneById = async (_id) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+      const exhibitionRoom = await ExhibitionRoomModel.findOne({ _id: _id }).exec();
+      if (!exhibitionRoom) {
+          serviceResponse = {
+              success: false,
+              content: {
+                  error: 'Exhibition not found.'
+              }
+          }
+      } else {
+          serviceResponse.content = exhibitionRoom;
+      }
+
+      return serviceResponse;
+  } catch(error) {
+      throw new Error('Internal Server Error');
+  }
+}
+
+ExhibitionRoomService.remove = async (_id) => {
+  let serviceResponse = {
+      success: true,
+      content: {}
+  }
+
+  try {
+      const exhibitionRoomDeleted = await ExhibitionRoomModel.findByIdAndDelete(_id).exec();
+      if (!exhibitionRoomDeleted) {
+          serviceResponse = {
+              success: false,
+              content: {
+                  error: 'Something went wrong. Try again later.'
+              }
+          }
+      }
+
+      return serviceResponse;
+  } catch(error) {
+      throw new Error('Interal Server Error');
+  }
+
 }
 
 module.exports = ExhibitionRoomService;

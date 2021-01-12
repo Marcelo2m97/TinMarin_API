@@ -5,5 +5,6 @@ const ExhibitionRoomController = require('./../../../controllers/api/ExhibitionR
 
 router.post('/', ExhibitionRoomController.create);
 router.get('/', ExhibitionRoomController.find);
+router.delete('/:_id', ExhibitionRoomController.remove);
 
 module.exports = router;
