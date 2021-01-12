@@ -69,7 +69,7 @@ ExhibitionRoomService.findOneExhibitionRoomByRoomCode = async (roomCode) => {
   }
 
   try {
-    const exhibitionRoom = await await ExhibitionRoomModel.findOne({ roomCode: roomCode }).populate({ 
+    const exhibitionRoom = await ExhibitionRoomModel.findOne({ roomCode: roomCode }).populate({ 
       path: 'exhibitions',
       model: 'Exhibition'
     }).exec();
@@ -85,6 +85,34 @@ ExhibitionRoomService.findOneExhibitionRoomByRoomCode = async (roomCode) => {
       serviceResponse.content = exhibitionRoom;
       return serviceResponse;
     }
+  } catch(error) {
+    throw new Error('Internal Server Error.')
+  }
+}
+
+ExhibitionRoomService.findAll = async () => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const exhibitionRooms = await ExhibitionRoomModel.find().populate({ 
+      path: 'exhibitions',
+      model: 'Exhibition'
+    });
+    if (!exhibitionRooms) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'No exhibition room was found.'
+        }
+      }
+    } else {
+      serviceResponse.content = exhibitionRooms;
+    }
+
+    return serviceResponse;
   } catch(error) {
     throw new Error('Internal Server Error.')
   }

@@ -30,25 +30,37 @@ ExhibitionRoomController.create = async (req, res) => {
   }
 }
 
-ExhibitionRoomController.findOneByRoomCode = async (req, res) => {
+ExhibitionRoomController.find = async (req, res) => {
   const roomCode = req.query.roomCode;
   if (!roomCode) {
-    return res.status(400).json({
-      error: 'No room code specified.'
-    });
-  }
-  
-  try {
-    const exhibitionRoom = await ExhibitionRoomService.findOneExhibitionRoomByRoomCode(roomCode);
-    if (!exhibitionRoom.success) {
-      return res.status(404).json(exhibitionRoom.content);
+    try {
+      const exhibitionRooms = await ExhibitionRoomService.findAll();
+      if (!exhibitionRooms.success) {
+        return res.status(404).json(exhibitionRooms.content);
+      }
+      return res.status(200).json(exhibitionRooms.content);
+    } catch(error) {
+      return res.status(500).json({
+        error: 'Internal Server Error.'
+      })
     }
-    return res.status(200).json(exhibitionRoom.content);
-  } catch(error) {
-    return res.status(500).json({
-      error: 'Internal Server Error.'
-    });
+  } else {
+    try {
+      const exhibitionRoom = await ExhibitionRoomService.findOneExhibitionRoomByRoomCode(roomCode);
+      if (!exhibitionRoom.success) {
+        return res.status(404).json(exhibitionRoom.content);
+      }
+      return res.status(200).json(exhibitionRoom.content);
+    } catch(error) {
+      return res.status(500).json({
+        error: 'Internal Server Error.'
+      });
+    }
   }
+}
+
+ExhibitionRoomController.findAll = async (req, res) => {
+  
 }
 
 module.exports = ExhibitionRoomController;
