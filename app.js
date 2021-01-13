@@ -1,6 +1,7 @@
 const express = require('express');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUI = require('swagger-ui-express');
+const swaggerDoc = require('./swagger.json');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -13,19 +14,7 @@ connect();
 
 const app = express();
 
-const swaggerOptions = {
-  swaggerDefinition: {
-    info: {
-      title: 'Tin Marin API',
-      version: '1.0.0'
-    }
-  },
-  apis: ['app.js']
-}
-
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
-
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

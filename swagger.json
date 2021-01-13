@@ -1,0 +1,66 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Tin Marín API",
+    "description": "This API is used to deliver info to the mobile app of Tin Marín.",
+    "version": "1.0.0",
+    "contact": {
+      "mame": "Marcelo Martínez",
+      "url": "https://github.com/Marcelo2m97",
+      "email": "marcelo2m1097@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://tinmarin.herokuapp.com/",
+      "description": "Testing server."
+    },
+    {
+      "url": "https://tin-marin-app.herokuapp.com/",
+      "description": "Production Server."
+    }
+  ],
+  "basePath": "/api/v1",
+  "paths": {
+    "/api/v1/education-areas": {
+      "post": {},
+      "get": {},
+      "delete": {}
+    },
+    "/api/v1/exhibition-rooms": {
+      "post": {},
+      "get": {},
+      "delete": {}
+    },
+    "/api/v1/exhibitions": {
+      "post": {},
+      "get": {},
+      "delete": {}
+    },
+    "/api/v1/faqs": {
+      "post": {},
+      "get": {},
+      "delete": {}
+    },
+    "/api/v1/recommended-websites": {
+      "post": {},
+      "get": {},
+      "delete": {}
+    },
+    "/api/v1/recommendations": {
+      "post": {},
+      "get": {},
+      "delete": {}
+    },
+    "/api/v1/suggestions": {
+      "post": {},
+      "get": {},
+      "delete": {}
+    },
+    "/api/v1/suggestion-types": {
+      "post": {},
+      "get": {},
+      "delete": {}
+    }
+  }
+}
