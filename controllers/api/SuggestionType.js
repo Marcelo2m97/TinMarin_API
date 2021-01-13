@@ -12,7 +12,7 @@ SuggestionTypeController.create = async (req, res) => {
   try{ 
     const suggestionTypeCreated = await SuggestionTypeService.create(req.body);
     if (!suggestionTypeCreated.success) {
-      return res.status(409).json(suggestionTypeCreated.content);
+      return res.status(503).json(suggestionTypeCreated.content);
     }
   
     return res.status(201).json(suggestionTypeCreated.content);
@@ -51,7 +51,7 @@ SuggestionTypeController.remove = async (req, res) => {
     }
     const suggestionTypeDeleted = await SuggestionTypeService.remove(req.params._id);
     if (!suggestionTypeDeleted.success) {
-      return res.status(409).json(suggestionTypeDeleted);
+      return res.status(503).json(suggestionTypeDeleted);
     }
     return res.status(204).json(suggestionTypeDeleted.content);
   } catch(error) {

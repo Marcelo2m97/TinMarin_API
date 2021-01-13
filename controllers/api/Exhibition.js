@@ -14,7 +14,7 @@ ExhibitionController.addNewExhibition = async (req, res) => {
     const exhibitionCreated = await ExhibitionService.create(req.body);
 
     if (!exhibitionCreated.success) {
-      return res.status(409).json(exhibitionCreated.content);
+      return res.status(503).json(exhibitionCreated.content);
     }
 
     return res.status(201).json(exhibitionCreated.content);
@@ -66,7 +66,7 @@ ExhibitionController.remove = async (req, res) => {
     }
     const exhibitionDeleted = await ExhibitionService.remove(req.params._id);
     if (!exhibitionDeleted.success) {
-      return res.status(409).json(exhibitionDeleted.content);
+      return res.status(503).json(exhibitionDeleted.content);
     }
 
     return res.status(204).json(exhibitionDeleted.content);

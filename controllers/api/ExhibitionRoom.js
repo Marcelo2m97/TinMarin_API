@@ -19,7 +19,7 @@ ExhibitionRoomController.create = async (req, res) => {
 
     const exhibitionRoomCreated = await ExhibitionRoomService.create(req.body);
     if (!exhibitionRoomCreated.success) {
-      return res.status(409).json(exhibitionRoomCreated.content);
+      return res.status(503).json(exhibitionRoomCreated.content);
     }
 
     return res.status(201).json(exhibitionRoomCreated.content);
@@ -67,7 +67,7 @@ ExhibitionRoomController.remove = async (req, res) => {
     }
     const exhibitionRoomDeleted = await ExhibitionRoomService.remove(req.params._id);
     if (!exhibitionRoomDeleted.success) {
-      return res.status(409).json(exhibitionRoomDeleted.content);
+      return res.status(503).json(exhibitionRoomDeleted.content);
     }
 
     return res.status(204).json(exhibitionRoomDeleted.content);

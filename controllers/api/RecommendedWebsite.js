@@ -11,7 +11,7 @@ RecommendedWebsiteController.create = async (req, res) => {
   try {
     const recommendedWebsiteSaved = await RecommendedWebsiteService.create(req.body);
     if (!recommendedWebsiteSaved.success) {
-      return res.status(409).json(recommendedWebsiteSaved.content);
+      return res.status(503).json(recommendedWebsiteSaved.content);
     }
     return res.status(201).json(recommendedWebsiteSaved.content);
   } catch(error) {
@@ -44,7 +44,7 @@ RecommendedWebsiteController.remove = async (req, res) => {
     }
     const recommendedWebsiteDeleted = await RecommendedWebsiteService.remove(req.params._id);
     if (!recommendedWebsiteDeleted.success) {
-      return res.status(409).json(recommendedWebsiteDeleted.content);
+      return res.status(503).json(recommendedWebsiteDeleted.content);
     }
 
     return res.status(204).json(recommendedWebsiteDeleted.content);

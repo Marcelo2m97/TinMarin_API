@@ -11,7 +11,7 @@ SuggestionController.create = async (req, res) => {
   try {
     const suggestionCreated = await SuggestionService.create(req.body);
     if (!suggestionCreated.success) {
-      return res.status(409).json(suggestionCreated.content);
+      return res.status(503).json(suggestionCreated.content);
     }
 
     return res.status(201).json(suggestionCreated.content);
@@ -45,7 +45,7 @@ SuggestionController.remove = async (req, res) => {
     }
     const suggestionDeleted = await SuggestionService.remove(req.params._id);
     if (!suggestionDeleted.success) {
-      return res.status(409).json(suggestionDeleted.content);
+      return res.status(503).json(suggestionDeleted.content);
     }
 
     return res.status(204).json(suggestionDeleted.content);

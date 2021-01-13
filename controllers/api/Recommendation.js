@@ -10,7 +10,7 @@ RecommendationController.create = async (req, res) => {
   try {
     const recommendationCreated = await RecommendationService.create(req.body);
     if (!recommendationCreated.success) {
-      return res.status(409).content(recommendationCreated.content);
+      return res.status(503).content(recommendationCreated.content);
     }
     return res.status(201).json(recommendationCreated.content);
   } catch(error) {
@@ -43,7 +43,7 @@ RecommendationController.remove = async (req, res) => {
     }
     const recommendationDeleted = await RecommendationService.remove(req.params._id);
     if (!recommendationDeleted.success) {
-      return res.status(409).json(recommendationDeleted.content);
+      return res.status(503).json(recommendationDeleted.content);
     }
 
     return res.status(204).json(recommendationDeleted.content);

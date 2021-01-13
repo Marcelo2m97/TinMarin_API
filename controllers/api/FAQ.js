@@ -10,7 +10,7 @@ FAQController.create = async (req, res) => {
   try {
     const FAQSaved = await FAQService.create(req.body);
     if (!FAQSaved.success) {
-      return res.status(409).json(FAQSaved.content);
+      return res.status(503).json(FAQSaved.content);
     }
 
     return res.status(201).json(FAQSaved.content);
@@ -44,7 +44,7 @@ FAQController.remove = async (req, res) => {
     }
     const faqDeleted = await FAQService.remove(req.params._id);
     if (!faqDeleted.success) {
-      return res.status(409).json(faqDeleted.content);
+      return res.status(503).json(faqDeleted.content);
     }
 
     return res.status(204).json(faqDeleted.content);

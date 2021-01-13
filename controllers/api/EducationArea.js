@@ -12,7 +12,7 @@ EducationAreaController.create = async (req, res) => {
   try {
     const educationAreaSaved = await EducationAreaService.create(req.body);
     if (!educationAreaSaved.success) {
-      return res.status(409).json(educationAreaSaved.content);
+      return res.status(503).json(educationAreaSaved.content);
     }
 
     return res.status(201).json(educationAreaSaved.content);
@@ -51,7 +51,7 @@ EducationAreaController.remove = async (req, res) => {
     }
     const educationAreaDeleted = await EducationAreaService.remove(req.params._id);
     if (!educationAreaDeleted.success) {
-      return res.status(409).json(educationAreaDeleted.content);
+      return res.status(503).json(educationAreaDeleted.content);
     }
 
     return res.status(204).json(educationAreaDeleted.content);
