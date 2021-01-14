@@ -25,19 +25,34 @@ ExhibitionController.addNewExhibition = async (req, res) => {
   }
 }
 
-ExhibitionController.findAll = async (req, res) => {
-  try{
-    const exhibitionsFound = await ExhibitionService.getAll();
-  
-    if (!exhibitionsFound.success) {
-      return res.status(404).json(exhibitionsFound.content);
+ExhibitionController.find = async (req, res) => {
+  if (!req.query.name) {
+    try{
+      const exhibitionsFound = await ExhibitionService.getAll();
+    
+      if (!exhibitionsFound.success) {
+        return res.status(404).json(exhibitionsFound.content);
+      }
+    
+      return res.status(200).json(exhibitionsFound.content);
+    } catch(error) {
+      return res.status(500).json({
+        error: 'Internal Server Error.'
+      })
     }
+  } else {
+    try {
+      const exhibition = await ExhibitionService.findByName(req.query.name);
+      if (!exhibition.success) {
+        return res.status(404).json(exhibition.content);
+      }
   
-    return res.status(200).json(exhibitionsFound.content);
-  } catch(error) {
-    return res.status(500).json({
-      error: 'Internal Server Error.'
-    })
+      return res.status(200).json(exhibition.content);
+    } catch(error) {
+      res.status(500).json({
+        error: 'Internal Server Error.'
+      })
+    }
   }
 }
 
