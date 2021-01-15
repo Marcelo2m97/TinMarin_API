@@ -25,9 +25,7 @@ ExhibitionService.verifyFields = ({ name, description, images, educationArea, mi
 ExhibitionService.create = async ({ name, description, images, sponsorName, sponsorLogo, educationArea, minimunAge, maximumAge, duration, capacity }) => {
   let serviceResponse = {
     success: true,
-    content: {
-      message: "Exhibition created successfully."
-    }
+    content: {}
   }
 
   try {
@@ -52,6 +50,8 @@ ExhibitionService.create = async ({ name, description, images, sponsorName, spon
             error: "Exhibition could not be created."
           }
         }
+    } else {
+      serviceResponse.content = newExhibitionWasCreated;
     }
 
     return serviceResponse;

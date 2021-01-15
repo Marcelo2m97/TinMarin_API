@@ -15,11 +15,11 @@ const ExhibitionSchema = new Schema({
         type: String,
         required: true
     }],
-    rating: [Number],
-    sponsorName: {
+    rating: Number,
+    sponsorName: [{
         type: String,
         default: ""
-    },
+    }],
     sponsorLogo: [String],
     educationArea: [String],
     minimumAge: {
