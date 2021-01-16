@@ -1,8 +1,8 @@
 {
-  "openapi": "3.0.3",
+  "openapi": "3.0.0",
   "info": {
     "title": "Tin Marín API",
-    "description": "This API is used to deliver info to the mobile app of Tin Marín.",
+    "description": "Esta API es usada para el consumo de la información del Museo de Niños Tin Marín, principalmente para ser consumida por su aplicación móvil.",
     "version": "1.0.0",
     "contact": {
       "mame": "Marcelo Martínez",
@@ -13,54 +13,1736 @@
   "servers": [
     {
       "url": "https://tinmarin.herokuapp.com/",
-      "description": "Testing server."
+      "description": "Servidor de pruebas."
     },
     {
       "url": "https://tin-marin-app.herokuapp.com/",
-      "description": "Production Server."
+      "description": "Servidor de producción."
     }
   ],
   "basePath": "/api/v1",
   "paths": {
     "/api/v1/education-areas": {
-      "post": {},
-      "get": {},
-      "delete": {}
+      "post": {
+        "tags": [
+          "Área de educación"
+        ],
+        "summary": "Crear nueva área de educación.",
+        "description": "Crea una nueva area de educación en la base de datos. Necesita que se le provea mediante el cuerpo de la petición el nombre de la área de educación, el cual debe ser único. El área de educación creada se mostrará únicamente en la caja desplegable en la interfaz de administrador para la creación de exhibiciones.",
+        "requestBody": {
+          "description": "Este es un ejemplo del cuerpo que debe llevar la petición para una nueva área de educación. En 'Schema' puedes revisar las especificaciones de los datos.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Medicina"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Petición realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "5fd455744052b828f0a93f21"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Medicina"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2020-12-12T05:30:28.207Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2020-12-12T05:30:28.207Z"
+                    },
+                    "__v": {
+                      "type": "number",
+                      "example": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Uno de los elementos del requeridos no está presente en el JSON de la petición."
+          },
+          "403": {
+            "description": "El área de educación ya ha sido registrado antes por otro usuario. Es necesario usar otro nombre."
+          },
+          "500": {
+            "description": "Error desconocido."
+          },
+          "503": {
+            "description": "Posiblemente la base de datos no esté disponible, vuelve a intentar luego."
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Área de educación"
+        ],
+        "summary": "Consulta todas las áreas de educación.",
+        "description": "Consulta las áreas de educación almacenadas en la base de datos.",
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "5fd455744052b828f0a93f29"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Medicina"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2020-12-12T05:30:28.207Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2020-12-12T05:30:28.207Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se encontró ningún área de educación. También es posible que la base de datos no esté disponible en este momento, vuelve a intentar más tarde."
+          },
+          "500": {
+            "description": "Error desconocido."
+          }
+        }
+      }
+    },
+    "/api/v1/education-areas/{educationAreaId}": {
+      "delete": {
+        "tags": [
+          "Área de educación"
+        ],
+        "summary": "Elimina un área de educación en específico.",
+        "description": "Elimina un área de educación en específico de las áreas almacenadas en la base de datos.",
+        "parameters": [
+          {
+            "name": "Área de educación",
+            "in": "path",
+            "description": "Incluir dentro de la ruta el id del área de educación que se desea eliminar.",
+            "schema": {
+              "type": "string",
+              "example": "/5fd455744052b828f0a93f29"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se ha encontrado ningún área de educación."
+          },
+          "500": {
+            "description": "Error desconocido."
+          },
+          "503": {
+            "description": "Es posible que la base de datos no esté disponible en este momento, vuelve a intentar más tarde."
+          }
+        }
+      }
     },
     "/api/v1/exhibition-rooms": {
-      "post": {},
-      "get": {},
-      "delete": {}
+      "post": {
+        "tags": [
+          "Cuartos de exhibición"
+        ],
+        "summary": "Crear un nuevo cuarto de exhibición.",
+        "description": "Crea un nuevo cuarto de exhibición en la base de datos. Los cuartos de exhibición son grupos con exhibiciones escogidas por el usuario para el caso en que algún colegio, iglesia o comunidad quiera estudiar sobre exhibiciones específicas del museo podrá crear el cuarto con las exhibiciones que le parezcan. El código del cuarto es utilizado para el acceso al cuarto por otros usuarios.",
+        "requestBody": {
+          "description": "Este es un ejemplo del cuerpo que debe llevar la petición para crear una nueva exhibición. En 'Schema' puedes revisar las especificaciones de los datos. Es necesario proveer un nombre para la exhibición, una descripción, las imágenes de la exhibición, el area de educación, la edad mínima y máximo de los que pueden hacer uso de la exhibición, la duración de esta y la cantidad de gente que puede hacer uso de ella simultáneamente.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "TinMarín"
+                  },
+                  "exhibitions": {
+                    "type": "array",
+                    "example": [
+                      "5fd455744052b828f0a93f89", 
+                      "5fd455744052b828f0a93f50"
+                    ]
+                  }
+                },
+                "required": [
+                  "roomCode",
+                  "exhibitions"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Petición realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "exhibitions": {
+                      "type": "array",
+                      "example": [
+                        "5fd455744052b828f0a93f89",
+                        "5fd455744052b828f0a93f50"
+                      ]
+                    },
+                    "_id": {
+                      "type": "string",
+                      "example": "5fd455744052b828f0a93f70"
+                    },
+                    "roomCode": {
+                      "type": "string",
+                      "example": "TinMarín"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2020-12-12T05:30:28.207Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2020-12-12T05:30:28.207Z"
+                    },
+                    "__v": {
+                      "type": "number",
+                      "example": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Uno de los elementos del requeridos no está presente en el JSON de la petición."
+          },
+          "403": {
+            "description": "El código de cuarto ya ha sido registrado antes por otro usuario. Es necesario usar otro código o borrar los que ya no estén en uso."
+          },
+          "500": {
+            "description": "Error desconocido."
+          },
+          "503": {
+            "description": "Posiblemente la base de datos no esté disponible, vuelve a intentar luego."
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Cuartos de exhibición"
+        ],
+        "summary": "Consulta todos los cuartos de exhibición o filtra.",
+        "description": "Consulta los cuartos de exhibición almacenados en la base de datos o filtra y devuelve uno con el nombre indicado en el parámetro.",
+        "parameters": [
+          {
+            "name": "Cuarto de exhibición",
+            "in": "query",
+            "description": "Incluir un parámetro query llamado 'roomCode' para buscar entre todos los códigos de cuarto el valor especificado en dicha query.",
+            "schema": {
+              "type": "string",
+              "example": "TinMarin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "exhibitions": {
+                        "type": "array",
+                        "items": {
+                          "properties": {
+                            "images": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "www.url.com/imagendelhospitalito"
+                              }
+                            },
+                            "rating": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": 0
+                              }
+                            },
+                            "sponsorName": {
+                              "type": "string",
+                              "example": "Hospital de El Salvador"
+                            },
+                            "sponsorLogo": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "www.url.com/imagendelhospitaldeelsalvador"
+                              }
+                            },
+                            "educationArea": {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "Medicina"
+                              }
+                            },
+                            "minimunAge": {
+                              "type": "number",
+                              "example": 4
+                            },
+                            "maximumAge": {
+                              "type": "number",
+                              "example": 17
+                            },
+                            "_id": {
+                              "type": "string",
+                              "example": "5fd455744052b828f0a93f89"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "El Hospitalito"
+                            },
+                            "description": {
+                              "type": "string",
+                              "example": "Descripción del Hospitalito."
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "example": "2020-12-12T05:30:28.207Z"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "example": "2020-12-12T05:30:28.207Z"
+                            },
+                            "__v": {
+                              "type": "number",
+                              "example": 0
+                            }
+                          }
+                        }
+                      },
+                      "_id": {
+                        "type": "string",
+                        "example": "5fd455744052b828f0a93f70"
+                      },
+                      "roomCode": {
+                        "type": "string",
+                        "example": "TinMarín"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2020-12-12T05:10:28.207Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2020-12-12T05:10:28.207Z"
+                      },
+                      "__v": {
+                        "type": "number",
+                        "example": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se ha encontrado ningún cuarto de exhibición. También es posible que la base de datos no esté disponible en este momento, vuelve a intentar más tarde."
+          },
+          "500": {
+            "description": "Error desconocido."
+          }
+        }
+      }
+    },
+    "/api/v1/exhibition-rooms/{roomCode}": {
+      "delete": {
+        "tags": [
+          "Cuartos de exhibición"
+        ],
+        "summary": "Elimina un cuarto de exhibición en específico.",
+        "description": "Elimina un cuarto de exhibición en específico de las áreas almacenadas en la base de datos.",
+        "parameters": [
+          {
+            "name": "Cuarto de exhibición",
+            "in": "path",
+            "description": "Incluir dentro de la ruta el id del cuarto de exhibición que se desea eliminar.",
+            "schema": {
+              "type": "string",
+              "example": "/5fd455744052b828f0a93f70"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se ha encontrado ningún cuarto de exhibición."
+          },
+          "500": {
+            "description": "Error desconocido."
+          },
+          "503": {
+            "description": "Es posible que la base de datos no esté disponible en este momento, vuelve a intentar más tarde."
+          }
+        }
+      }
     },
     "/api/v1/exhibitions": {
-      "post": {},
-      "get": {},
-      "delete": {}
+      "post": {
+        "tags": [
+          "Exhibiciones"
+        ],
+        "summary": "Crear una nueva exhibición.",
+        "description": "Crea una nueva exhibición en la base de datos.",
+        "requestBody": {
+          "description": "Este es un ejemplo del cuerpo que debe llevar la petición para un nuevo cuarto de exhibición. En 'Schema' puedes revisar las especificaciones de los datos. Es necesario proveer un código para el cuarto, el cual debe ser alfanumérico (sin espacios). También necesita un arreglo de ids con todas las exhibiciones el usuario quiera incluir.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "El Teatrino"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "¡El Telón se abrió, es momento de que la obra inicie! Usa títeres..."
+                  },
+                  "images": {
+                    "type": "array",
+                    "example": "www.url.com/imagendelteatrino"
+                  },
+                  "sponsorName": {
+                    "type": "array",
+                    "example": ["Literatura para todos"]
+                  },
+                  "sponsorLogo": {
+                    "type": "array",
+                    "example": ["www.url.com/imagendeliteraturaparatodos"]
+                  },
+                  "educationArea": {
+                    "type": "array",
+                    "example": [
+                      "Arte",
+                      "Expresion y oratoria"
+                    ]
+                  },
+                  "minimunAge": {
+                    "type": "number",
+                    "example": 3
+                  },
+                  "maximumAge": {
+                    "type": "number",
+                    "example": 17
+                  },
+                  "duration": {
+                    "type": "number",
+                    "example": 20
+                  },
+                  "capacity": {
+                    "type": "number",
+                    "example": 15
+                  }
+                },
+                "required": [
+                  "name",
+                  "description",
+                  "images",
+                  "educationArea",
+                  "minimunAge",
+                  "maximumAge",
+                  "duration",
+                  "capacity"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Petición realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "El Teatrino"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "¡El Telón se abrió, es momento de que la obra inicie! Usa títeres..."
+                    },
+                    "images": {
+                      "type": "array",
+                      "example": "www.url.com/imagendelteatrino"
+                    },
+                    "sponsorName": {
+                      "type": "array",
+                      "example": ["Literatura para todos"]
+                    },
+                    "sponsorLogo": {
+                      "type": "array",
+                      "example": ["www.url.com/imagendeliteraturaparatodos"]
+                    },
+                    "educationArea": {
+                      "type": "array",
+                      "example": [
+                        "Arte",
+                        "Expresion y oratoria"
+                      ]
+                    },
+                    "minimunAge": {
+                      "type": "number",
+                      "example": 3
+                    },
+                    "maximumAge": {
+                      "type": "number",
+                      "example": 17
+                    },
+                    "duration": {
+                      "type": "number",
+                      "example": 20
+                    },
+                    "capacity": {
+                      "type": "number",
+                      "example": 15
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2020-12-12T05:30:28.207Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2020-12-12T05:30:28.207Z"
+                    },
+                    "__v": {
+                      "type": "number",
+                      "example": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Uno de los elementos del requeridos no está presente en el JSON de la petición."
+          },
+          "403": {
+            "description": "La exhibicion ya ha sido registrado antes por otro usuario. Es necesario usar otro nombre."
+          },
+          "500": {
+            "description": "Error desconocido."
+          },
+          "503": {
+            "description": "Posiblemente la base de datos no esté disponible, vuelve a intentar luego."
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Exhibiciones"
+        ],
+        "summary": "Consulta todas las exhibición o filtra según el nombre que se le indica.",
+        "description": "Consulta todas las exhibición almacenadas en la base de datos o filtra según el nombre que se le indica.",
+        "parameters": [
+          {
+            "name": "Exhibición",
+            "in": "query",
+            "description": "Incluir en la ruta un parámetro query que contenga un nombre que filtre todas las exhibiciones.",
+            "schema": {
+              "type": "string",
+              "example": [
+                "El Avión",
+                "Banco"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "images": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "example": "www.url.com/imagendelhospitalito"
+                        }
+                      },
+                      "rating": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "example": 0
+                        }
+                      },
+                      "sponsorName": {
+                        "type": "string",
+                        "example": "Hospital de El Salvador"
+                      },
+                      "sponsorLogo": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "example": "www.url.com/imagendelhospitaldeelsalvador"
+                        }
+                      },
+                      "educationArea": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "example": "Medicina"
+                        }
+                      },
+                      "minimunAge": {
+                        "type": "number",
+                        "example": 4
+                      },
+                      "maximumAge": {
+                        "type": "number",
+                        "example": 17
+                      },
+                      "_id": {
+                        "type": "string",
+                        "example": "5fd455744052b828f0a93f89"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "El Hospitalito"
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "Descripción del Hospitalito."
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2020-12-12T05:30:28.207Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2020-12-12T05:30:28.207Z"
+                      },
+                      "__v": {
+                        "type": "number",
+                        "example": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "El cuarto de exhibición buscado no se ha encontrado. También es posible que la base de datos no esté disponible en este momento, vuelve a intentar más tarde."
+          },
+          "500": {
+            "description": "Error desconocido."
+          }
+        }
+      }
+    },
+    "/api/v1/exhibitions/{exhibitionId}": {
+      "get": {
+        "tags": [
+          "Exhibiciones"
+        ],
+        "summary": "Consulta por una exhibición en específico dentro de todas las exhibiciones",
+        "description": "Consulta por una exhibición en específico dentro de todas las exhibiciones almacenadas en la base de datos.",
+        "parameters": [
+          {
+            "name": "Exhibición",
+            "in": "path",
+            "description": "Incluir en la ruta un parámetro que contenga el id para buscar entre todas las exhibiciones la especificada.",
+            "schema": {
+              "type": "string",
+              "example": "/5fd455744052b828f0a93e87"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "images": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": "www.url.com/imagendelhospitalito"
+                      }
+                    },
+                    "rating": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": 0
+                      }
+                    },
+                    "sponsorName": {
+                      "type": "string",
+                      "example": "Hospital de El Salvador"
+                    },
+                    "sponsorLogo": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": "www.url.com/imagendelhospitaldeelsalvador"
+                      }
+                    },
+                    "educationArea": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": "Medicina"
+                      }
+                    },
+                    "minimunAge": {
+                      "type": "number",
+                      "example": 4
+                    },
+                    "maximumAge": {
+                      "type": "number",
+                      "example": 17
+                    },
+                    "_id": {
+                      "type": "string",
+                      "example": "5fd455744052b828f0a93f89"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "El Hospitalito"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Descripción del Hospitalito."
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2020-12-12T05:30:28.207Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2020-12-12T05:30:28.207Z"
+                    },
+                    "__v": {
+                      "type": "number",
+                      "example": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "El cuarto de exhibición buscado no se ha encontrado. También es posible que la base de datos no esté disponible en este momento, vuelve a intentar más tarde."
+          },
+          "500": {
+            "description": "Error desconocido."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Exhibiciones"
+        ],
+        "summary": "Elimina una exhibición en específico.",
+        "description": "Elimina una exhibición en específico de las exhibiciones almacenadas en la base de datos.",
+        "parameters": [
+          {
+            "name": "Exhibición",
+            "in": "path",
+            "description": "Incluir dentro de la ruta el id de la exhibición que se desea eliminar.",
+            "schema": {
+              "type": "string",
+              "example": "/5fd455744052b828f0a93f31"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se ha encontrado ningún cuarto de exhibición."
+          },
+          "500": {
+            "description": "Error desconocido."
+          },
+          "503": {
+            "description": "Es posible que la base de datos no esté disponible en este momento, vuelve a intentar más tarde."
+          }
+        }
+      }
     },
     "/api/v1/faqs": {
-      "post": {},
-      "get": {},
-      "delete": {}
+      "post": {
+        "tags": [
+          "FAQ"
+        ],
+        "summary": "Crear una nueva pregunta frecuentemente respondida.",
+        "description": "Crea una nueva pregunta frecuentemente respondida en la base de datos.",
+        "requestBody": {
+          "description": "Este es un ejemplo del cuerpo que debe llevar la petición para pregunta contestada frecuentemente. En 'Schema' puedes revisar las especificaciones de los datos. Es necesario proveer una pregunta y una respuesta.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "question": {
+                    "type": "string",
+                    "example": "Pregunta frecuentemente preguntada"
+                  },
+                  "answer": {
+                    "type": "string",
+                    "example": "Respuesta a la pregunta"
+                  }
+                },
+                "required": [
+                  "question",
+                  "answer"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Petición realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "5fd455744052b828f0a93f80"
+                    },
+                    "question": {
+                      "type": "string",
+                      "example": "Pregunta frecuentemente respondida"
+                    },
+                    "answer": {
+                      "type": "string",
+                      "example": "Respuesta a la pregunta"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2020-12-12T05:30:28.207Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2020-12-12T05:30:28.207Z"
+                    },
+                    "__v": {
+                      "type": "number",
+                      "example": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Uno de los elementos del requeridos no está presente en el JSON de la petición."
+          },
+          "500": {
+            "description": "Error desconocido."
+          },
+          "503": {
+            "description": "Posiblemente la base de datos no esté disponible, vuelve a intentar luego."
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "FAQ"
+        ],
+        "summary": "Consulta todas las pregunta frecuentemente respondida.",
+        "description": "Consulta todas las pregunta frecuentemente respondida almacenadas en la base de datos.",
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "5fd455744052b828f0a93f00"
+                      },
+                      "question": {
+                        "type": "string",
+                        "example": "Pregunta frecuentemente respondida"
+                      },
+                      "answer": {
+                        "type": "string",
+                        "example": "Respuesta a la pregunta"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2020-12-12T05:30:28.207Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2020-12-12T05:30:28.207Z"
+                      },
+                      "__v": {
+                        "type": "number",
+                        "example": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se han encontrado preguntas frecuentemente respondidas. También es posible que la base de datos no esté disponible en este momento, vuelve a intentar más tarde."
+          },
+          "500": {
+            "description": "Error desconocido."
+          }
+        }
+      }
+    },
+    "/api/v1/faqs/{faqId}": {
+      "delete": {
+        "tags": [
+          "FAQ"
+        ],
+        "summary": "Elimina una pregunta frecuentemente respondida en específico.",
+        "description": "Elimina una pregunta frecuentemente respondida en específico de las almacenadas en la base de datos.",
+        "parameters": [
+          {
+            "name": "FAQ",
+            "in": "path",
+            "description": "Incluir dentro de la ruta el id de la pregunta frecuentemente respondida que se desea eliminar.",
+            "schema": {
+              "type": "string",
+              "example": "/5fd455744052b828f0a93f31"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se ha encontrado ninguna pregunta frecuentemente respondida."
+          },
+          "500": {
+            "description": "Error desconocido."
+          },
+          "503": {
+            "description": "Es posible que la base de datos no esté disponible en este momento, vuelve a intentar más tarde."
+          }
+        }
+      }
     },
     "/api/v1/recommended-websites": {
-      "post": {},
-      "get": {},
-      "delete": {}
+      "post": {
+        "tags": [
+          "Sitios web recomendados"
+        ],
+        "summary": "Crear un nuevo enlace a sitio web recomendado por el Tin Marín.",
+        "description": "Crear un nuevo enlace a sitio web recomendado por el Tin Marín en la base de datos.",
+        "requestBody": {
+          "description": "Este es un ejemplo del cuerpo que debe llevar la petición para crear un enlace a un sitio web recomendado. En 'Schema' puedes revisar las especificaciones de los datos. Es necesario proveer una url (enlace) a la página que se quiere recomendar, una imagen relacionada con el sitio que se recomienda y el título del sitio web.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "example": "www.sitiorecomendadoporeltinmarin.com"
+                  },
+                  "image": {
+                    "type": "string",
+                    "example": "www.url.com/imagendelsitiorecomendadoporeltinmarin"
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "Título del sitio recomendado por el Tin Marín"
+                  }
+                },
+                "required": [
+                  "url",
+                  "image",
+                  "title"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Petición realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "image": {
+                      "type": "string",
+                      "example": "www.url.com/imagendelsitiorecomendadoporeltinmarin"
+                    },
+                    "_id": {
+                      "type": "string",
+                      "example": "5fd455744052b828f0a93f80"
+                    },
+                    "url": {
+                      "type": "string",
+                      "example": "www.sitiorecomendadoporeltinmarin.com"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "Título del sitio recomendado por el Tin Marín"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2020-12-12T05:30:28.207Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2020-12-12T05:30:28.207Z"
+                    },
+                    "__v": {
+                      "type": "number",
+                      "example": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Uno de los elementos del requeridos no está presente en el JSON de la petición."
+          },
+          "500": {
+            "description": "Error desconocido."
+          },
+          "503": {
+            "description": "Posiblemente la base de datos no esté disponible, vuelve a intentar luego."
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Sitios web recomendados"
+        ],
+        "summary": "Consulta todos los sitios web recomendados.",
+        "description": "Consulta todos los sitios web recomendados almacenados en la base de datos.",
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "image": {
+                        "type": "string",
+                        "example": "www.url.com/imagenpreviodelsitio"
+                      },
+                      "_id": {
+                        "type": "string",
+                        "example": "5fd455744052b828f0a93f00"
+                      },
+                      "url": {
+                        "type": "string",
+                        "example": "www.sitiorecomendado.com"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "Este es un sitio que el Tin Marín te recomiendad leer para informarte."
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2020-12-12T05:30:28.207Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2020-12-12T05:30:28.207Z"
+                      },
+                      "__v": {
+                        "type": "number",
+                        "example": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se han encontrado sitios web recomendados por el Tin Marín. También es posible que la base de datos no esté disponible en este momento, vuelve a intentar más tarde."
+          },
+          "500": {
+            "description": "Error desconocido."
+          }
+        }
+      }
+    },
+    "/api/v1/recommended-websites/{recommendedWebsiteId}": {
+      "delete": {
+        "tags": [
+          "Sitios web recomendados"
+        ],
+        "summary": "Elimina un sitio web recomendado por el Tin Marín en específico.",
+        "description": "Elimina un sitio web recomendado por el Tin Marín en específico de los almacenados en la base de datos.",
+        "parameters": [
+          {
+            "name": "Sitios web recomendados",
+            "in": "path",
+            "description": "Incluir dentro de la ruta el id del sitio web recomendado que se desea eliminar.",
+            "schema": {
+              "type": "string",
+              "example": "/5fd455744052b828f0a93f30"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se ha encontrado ninguna ningún sitio web recomendado."
+          },
+          "500": {
+            "description": "Error desconocido."
+          },
+          "503": {
+            "description": "Es posible que la base de datos no esté disponible en este momento, vuelve a intentar más tarde."
+          }
+        }
+      }
     },
     "/api/v1/recommendations": {
-      "post": {},
-      "get": {},
-      "delete": {}
+      "post": {
+        "tags": [
+          "Recomendaciones"
+        ],
+        "summary": "Crear una nueva recomendación.",
+        "description": "Crear una nueva recomendación en la base de datos.",
+        "requestBody": {
+          "description": "Este es un ejemplo del cuerpo que debe llevar la petición para crear una recomendación. En 'Schema' puedes revisar las especificaciones de los datos. Es necesario proveer un título y una descripción para la recomendación, también la fuente y una imagen de la fuente.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Título de la recomendación del Tin Marín"
+                  },
+                  "description": {
+                    "type": "array",
+                    "example": [
+                      "Primer párrafo de la recomendación.",
+                      "Segundo párrafo de la recomendación"
+                    ]
+                  },
+                  "source": {
+                    "type": "string",
+                    "example": "Fuente en la que se basa la recomendación"
+                  },
+                  "image": {
+                    "type": "string",
+                    "example": "www.url.com/imagendelafuentedelarecomendacion"
+                  }
+                },
+                "required": [
+                  "title",
+                  "description",
+                  "source",
+                  "image"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Petición realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "description": {
+                      "type": "array",
+                      "example": [
+                        "Primer párrafo de la recomendación.",
+                        "Segundo párrafo de la recomendación"
+                      ]
+                    },
+                    "source": {
+                      "type": "string",
+                      "example": "Fuente en la que se basa la recomendación"
+                    },
+                    "image": {
+                      "type": "string",
+                      "example": "www.url.com/imagendelafuentedelarecomendacion"
+                    },
+                    "_id": {
+                      "type": "string",
+                      "example": "5fd455744052b828f0a93f80"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "Título de la recomendación del Tin Marín"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2020-12-12T05:30:28.207Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2020-12-12T05:30:28.207Z"
+                    },
+                    "__v": {
+                      "type": "number",
+                      "example": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Uno de los elementos del requeridos no está presente en el JSON de la petición."
+          },
+          "500": {
+            "description": "Error desconocido."
+          },
+          "503": {
+            "description": "Posiblemente la base de datos no esté disponible, vuelve a intentar luego."
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Recomendaciones"
+        ],
+        "summary": "Consulta todas las recomendaciones hechas por el Tin Marín.",
+        "description": "Consulta todas las recomendaciones hechas por el Tin Marín almacenados en la base de datos.",
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "description": {
+                        "type": "array",
+                        "example": [
+                          "Párrafo 1",
+                          "Párrafo 2"
+                        ]
+                      },
+                      "source": {
+                        "type": "string",
+                        "example": "OMS"
+                      },
+                      "image": {
+                        "type": "string",
+                        "example": "www.url.com/imagendelaoms"
+                      },
+                      "_id": {
+                        "type": "string",
+                        "example": "5fd455744052b828f0a93t75"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "5fd455744052b828f0a93t75"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2020-12-12T05:30:28.207Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2020-12-12T05:30:28.207Z"
+                      },
+                      "__v": {
+                        "type": "number",
+                        "example": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se han encontrado recomendaciones hechas por el Tin Marín. También es posible que la base de datos no esté disponible en este momento, vuelve a intentar más tarde."
+          },
+          "500": {
+            "description": "Error desconocido."
+          }
+        }
+      }
+    },
+    "/api/v1/recommendations/{recommendationId}": {
+      "delete": {
+        "tags": [
+          "Recomendaciones"
+        ],
+        "summary": "Elimina una recomendación del Tin Marín en específico.",
+        "description": "Elimina una recomendación del Tin Marín en específico de las almacenadas en la base de datos.",
+        "parameters": [
+          {
+            "name": "Recomendaciones",
+            "in": "path",
+            "description": "Incluir dentro de la ruta el id de la recomendación que se desea eliminar.",
+            "schema": {
+              "type": "string",
+              "example": "/5fd455744052b828f0a93f32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se ha encontrado ninguna recomendación."
+          },
+          "500": {
+            "description": "Error desconocido."
+          },
+          "503": {
+            "description": "Es posible que la base de datos no esté disponible en este momento, vuelve a intentar más tarde."
+          }
+        }
+      }
     },
     "/api/v1/suggestions": {
-      "post": {},
-      "get": {},
-      "delete": {}
+      "post": {
+        "tags": [
+          "Sugerencias"
+        ],
+        "summary": "Crear una nueva sugerencia.",
+        "description": "Crear una nueva sugerencia en la base de datos. Es necesario que exista por lo menos un tipo de sugerencia para poder crear una sugerencia.",
+        "requestBody": {
+          "description": "Este es un ejemplo del cuerpo que debe llevar la petición para crear una sugerencia. En 'Schema' puedes revisar las especificaciones de los datos. Es necesario proveer el tipo de sugerencia y la sugerencia misma.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "suggestionType": {
+                    "type": "string",
+                    "example": "Queja"
+                  },
+                  "suggestion": {
+                    "type": "string",
+                    "example": "Se debe mejorar el servicio proveído en la entrada."
+                  }
+                },
+                "required": [
+                  "suggestionType",
+                  "suggestion"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Petición realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "5fd455744052b828f0a93f80"
+                    },
+                    "suggestionType": {
+                      "type": "string",
+                      "example": "Queja"
+                    },
+                    "suggestion": {
+                      "type": "string",
+                      "example": "Se debe mejorar el servicio proveído en la entrada."
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2020-12-12T05:30:28.207Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2020-12-12T05:30:28.207Z"
+                    },
+                    "__v": {
+                      "type": "number",
+                      "example": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Uno de los elementos del requeridos no está presente en el JSON de la petición."
+          },
+          "500": {
+            "description": "Error desconocido."
+          },
+          "503": {
+            "description": "Posiblemente la base de datos no esté disponible, vuelve a intentar luego."
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Sugerencias"
+        ],
+        "summary": "Consulta todas las sugerencias hechas por el Tin Marín.",
+        "description": "Consulta todas las sugerencias hechas por el Tin Marín almacenadas en la base de datos.",
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "5fd455744052b828f0a93f80"
+                      },
+                      "suggestionType": {
+                        "type": "string",
+                        "example": "Queja"
+                      },
+                      "suggestion": {
+                        "type": "string",
+                        "example": "Se debe mejorar el servicio proveído en la entrada."
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2020-12-12T05:30:28.207Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2020-12-12T05:30:28.207Z"
+                      },
+                      "__v": {
+                        "type": "number",
+                        "example": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se han encontrado sugerencias hechas por el Tin Marín. También es posible que la base de datos no esté disponible en este momento, vuelve a intentar más tarde."
+          },
+          "500": {
+            "description": "Error desconocido."
+          }
+        }
+      }
+    },
+    "/api/v1/suggestions/{suggestionId}": {
+      "delete": {
+        "tags": [
+          "Sugerencias"
+        ],
+        "summary": "Elimina una sugerencia específica hecha al Tin Marín.",
+        "description": "Elimina una sugerencia específica hecha al Tin Marín de las almacenadas en la base de datos.",
+        "parameters": [
+          {
+            "name": "Sugerencias",
+            "in": "path",
+            "description": "Incluir dentro de la ruta el id de la sugerencia que se desea eliminar.",
+            "schema": {
+              "type": "string",
+              "example": "/5fd455744052b828f0a93f17"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se ha encontrado ninguna ningún sitio web recomendado."
+          },
+          "500": {
+            "description": "Error desconocido."
+          },
+          "503": {
+            "description": "Es posible que la base de datos no esté disponible en este momento, vuelve a intentar más tarde."
+          }
+        }
+      }
     },
     "/api/v1/suggestion-types": {
-      "post": {},
-      "get": {},
-      "delete": {}
+      "post": {
+        "tags": [
+          "Tipos de sugerencia"
+        ],
+        "summary": "Crear un nuevo tipo de sugerencia.",
+        "description": "Crear un nuevo top de sugerencia en la base de datos. Es necesario no repetir el nombre del tipo de sugerencia con uno ya almacenado en la base de datos.",
+        "requestBody": {
+          "description": "Este es un ejemplo del cuerpo que debe llevar la petición para crear una sugerencia. En 'Schema' puedes revisar las especificaciones de los datos. Es necesario proveer únicamente el nombre del tipo de sugerencia.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Mejora"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Petición realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "5fd455744052b828f0a93f80"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Mejora"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2020-12-12T05:30:28.207Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2020-12-12T05:30:28.207Z"
+                    },
+                    "__v": {
+                      "type": "number",
+                      "example": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Uno de los elementos del requeridos no está presente en el JSON de la petición."
+          },
+          "500": {
+            "description": "Error desconocido."
+          },
+          "503": {
+            "description": "Posiblemente la base de datos no esté disponible, vuelve a intentar luego."
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Tipos de sugerencia"
+        ],
+        "summary": "Consulta todos los tipos de sugerencias que se le pueden hacer al Tin Marín.",
+        "description": "Consulta todos los tipos de sugerencias que se el pueden hacer al Tin Marín que están almacenadas en la base de datos.",
+        "responses": {
+          "200": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "5fd455744052b828f0a93f98"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "Queja"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "example": "2020-12-12T05:30:28.207Z"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "example": "2020-12-12T05:30:28.207Z"
+                      },
+                      "__v": {
+                        "type": "number",
+                        "example": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se han encontrado tipos de sugerencias para hacer al Tin Marín. También es posible que la base de datos no esté disponible en este momento, vuelve a intentar más tarde."
+          },
+          "500": {
+            "description": "Error desconocido."
+          }
+        }
+      }
+    },
+    "/api/v1/suggestion-types/{suggestionTypeId}": {
+      "delete": {
+        "tags": [
+          "Tipos de sugerencia"
+        ],
+        "summary": "Elimina un tipo de sugerencia en específico.",
+        "description": "Elimina un tipo de sugerencia en específico de los almacenados en la base de datos.",
+        "parameters": [
+          {
+            "name": "Tipos de sugerencia",
+            "in": "path",
+            "description": "Incluir dentro de la ruta el id del tipo de la sugerencia que se desea eliminar.",
+            "schema": {
+              "type": "string",
+              "example": "/5fd455744052b828f0a93f90"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Consulta realizada correctamente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se ha encontrado ningún tipo de sugerencia."
+          },
+          "500": {
+            "description": "Error desconocido."
+          },
+          "503": {
+            "description": "Es posible que la base de datos no esté disponible en este momento, vuelve a intentar más tarde."
+          }
+        }
+      }
     }
   }
 }
