@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const apiRouter = require('./routes/api');
+const apiPrivateRouter = require('./routes/api-private');
 
 const { connect } = require('./config/database');
 
@@ -22,5 +23,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api', apiRouter);
+app.use('/api', apiPrivateRouter);
 
 module.exports = app;

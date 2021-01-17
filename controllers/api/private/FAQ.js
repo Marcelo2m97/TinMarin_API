@@ -1,4 +1,4 @@
-const FAQService = require('./../../services/FAQ');
+const FAQService = require('./../../../services/FAQ');
 
 const FAQController = {};
 
@@ -18,21 +18,6 @@ FAQController.create = async (req, res) => {
     return res.status(500).json({
       error: 'Internal Server Error.'
     });
-  }
-}
-
-FAQController.findAll = async (req, res) => {
-  try {
-    const faqs = await FAQService.findAll();
-    if (!faqs.success) {
-      return res.status(404).json(faqs.content);
-    }
-
-    return res.status(200).json(faqs.content);
-  } catch(error) {
-    return res.status(500).json({
-      error: 'Internal Server Error.'
-    })
   }
 }
 
