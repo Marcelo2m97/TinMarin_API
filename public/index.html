@@ -1,13 +1,40 @@
 <html>
 
 <head>
-  <title>Express</title>
-  <link rel="stylesheet" href="/stylesheets/style.css">
+  <title>Tin Marín API</title>
+  <link rel="icon" href="./images/logo-tm-transparente.png">
+  <link rel="stylesheet" href="/stylesheets/styles.css">
+  <link rel="stylesheet" href="/stylesheets/normalize.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 </head>
 
 <body>
-  <h1>Express</h1>
-  <p>Welcome to Express</p>
+  <nav>
+    <div class="nav-wrapper blue darken-2">
+      <a href="#" class="brand-logo"><img src="images/logo-tm-transparente.png" style="height: 65;"/></a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="https://tinmarin.org">Sitio web</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container grey lighten-3 z-depth-2" style="margin-top: 5%; padding-top: 25px; padding-left: 25px; padding-right: 25px; padding-bottom: 25px">
+    <div class="row">
+      <div class="col s12 center-align">
+        <img src="images/logo-tm-transparente.png"/>
+      </div>
+      <div class="col s12 input-field">
+        <input type="text" class="validate" id="username" required>
+        <label for="username">Username</label>
+      </div>
+      <div class="col s12 input-field">
+        <input type="password" class="validate" id="password" required>
+        <label for="password">Password</label>
+      </div>
+    </div>
+    <div class="col s12 center-align">
+      <button type="submit" class="btn blue darken-2 waves-effect">LOGIN</button>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
-
 </html>
