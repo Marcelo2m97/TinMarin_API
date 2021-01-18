@@ -6,6 +6,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+const AuthMiddleware = require('./middlewares/Auth');
+
 const apiRouter = require('./routes/api');
 const apiPrivateRouter = require('./routes/api-private');
 
@@ -23,6 +25,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api', apiRouter);
+app.use(AuthMiddleware.verifyAuth);
 app.use('/api', apiPrivateRouter);
 
 module.exports = app;

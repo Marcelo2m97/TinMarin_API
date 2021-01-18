@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const EducationArea =require('./v1/EducationArea');
+const AuthRouter = require('./v1/Auth');
+const EducationAreaRouter = require('./v1/EducationArea');
 const ExhibitionRouter = require('./v1/Exhibition');
 const ExhibitionRoomRouter = require('./v1/ExhibitionRoom');
 const FAQRouter = require('./v1/FAQ');
@@ -10,7 +11,8 @@ const RecommendedWebsiteRouter = require('./v1/RecommendedWebsite');
 const SuggestionTypeRouter = require('./v1/SuggestionType');
 const SuggestionRouter = require('./v1/Suggestion');
 
-router.use('/education-areas', EducationArea);
+router.use('/auth', AuthRouter);
+router.use('/education-areas', EducationAreaRouter);
 router.use('/exhibitions', ExhibitionRouter);
 router.use('/exhibition-rooms', ExhibitionRoomRouter);
 router.use('/faqs', FAQRouter);
