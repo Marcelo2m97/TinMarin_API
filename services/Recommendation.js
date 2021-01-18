@@ -52,6 +52,31 @@ RecommendationService.create = async ({ title, description, source, image }) => 
 
 }
 
+RecommendationService.findByTitle = async ({ title }) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  };
+
+  try {
+    const recommendation = RecommendationModel.findOne({ title: title });
+    if (!recommendation) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Recommendation not found.'
+        }
+      }
+    } else {
+      serviceResponse.content = recommendation;
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error("Internal Server Error.");
+  }
+}
+
 RecommendationService.findAll = async () => {
   let serviceResponse = {
     success: true,

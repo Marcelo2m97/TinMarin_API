@@ -18,7 +18,6 @@ ExhibitionRoomService.verifyFields = ({ roomCode, exhibitions }) => {
       }
     };
   }
-  console.log(roomCodeRegExp.test(roomCode));
   if (!roomCodeRegExp.test(roomCode)) {
     serviceResponse = {
       success: false,

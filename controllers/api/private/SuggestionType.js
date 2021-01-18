@@ -9,7 +9,13 @@ SuggestionTypeController.create = async (req, res) => {
     return res.status(400).json(suggestionTypeValidated.content);
   }
 
-  try{ 
+  try{
+    const suggestionTypesExists = await SuggestionTypeService.findOneByName(req.body);
+    if (suggestionTypesExists.success) {
+      return res.status(403).json({
+        error: 'Suggestion type already exists.'
+      });
+    }
     const suggestionTypeCreated = await SuggestionTypeService.create(req.body);
     if (!suggestionTypeCreated.success) {
       return res.status(503).json(suggestionTypeCreated.content);

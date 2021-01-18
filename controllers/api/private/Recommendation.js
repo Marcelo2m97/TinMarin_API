@@ -8,6 +8,12 @@ RecommendationController.create = async (req, res) => {
     return res.status(400).json(recommendationValidated.content);
   }
   try {
+    const recommendationExists = await RecommendationService.findByTitle(req.body);
+    if (recommendationExists.success) {
+      return res.status(403).json({
+        error: 'Recommendation with indicated title already exists.'
+      });
+    }
     const recommendationCreated = await RecommendationService.create(req.body);
     if (!recommendationCreated.success) {
       return res.status(503).content(recommendationCreated.content);

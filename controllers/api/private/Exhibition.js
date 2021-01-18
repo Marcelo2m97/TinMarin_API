@@ -10,6 +10,13 @@ ExhibitionController.addNewExhibition = async (req, res) => {
   }
 
   try {
+    const exhibitionExists = await ExhibitionService.findOneByName(req.body);
+    if (exhibitionExists.success) {
+      return res.status(403).json({
+        error: 'Exhibition with indicated name already exists.'
+      });
+    }
+    
     const exhibitionCreated = await ExhibitionService.create(req.body);
 
     if (!exhibitionCreated.success) {

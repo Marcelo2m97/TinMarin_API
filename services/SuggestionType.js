@@ -51,6 +51,31 @@ SuggestionTypeService.create = async ({ name }) => {
   }
 }
 
+SuggestionTypeService.findOneByName = async ({ name }) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try{
+    const suggestionType = SuggestionTypeModel.findOne({ name: name });
+    if (!suggestionType) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Suggestion Type not found.'
+        }
+      }
+    } else {
+      serviceResponse.content = suggestionType;
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error.')
+  }
+}
+
 SuggestionTypeService.findAll = async () => {
   let serviceResponse = {
     success: true,

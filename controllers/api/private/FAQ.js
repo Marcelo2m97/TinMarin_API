@@ -8,6 +8,12 @@ FAQController.create = async (req, res) => {
     return res.status(400).json(FAQVerified.content);
   }
   try {
+    const FAQExists = await FAQService.findByQuestion(req.body);
+    if (FAQExists.success) {
+      return res.status(403).json({
+        error: 'FAQ with indicated question already exists.'
+      })
+    }
     const FAQSaved = await FAQService.create(req.body);
     if (!FAQSaved.success) {
       return res.status(503).json(FAQSaved.content);

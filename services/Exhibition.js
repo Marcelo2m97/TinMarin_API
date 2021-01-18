@@ -60,6 +60,31 @@ ExhibitionService.create = async ({ name, description, images, sponsorName, spon
   }
 }
 
+ExhibitionService.findOneByName = async ({ name }) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try{
+    const exhibition = ExhibitionModel.findOne({ name: name });
+    if (!exhibition) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Exhibition not found.'
+        }
+      }
+    } else {
+      serviceResponse.content = exhibition;
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error.')
+  }
+}
+
 ExhibitionService.getAll = async() => {
   let serviceResponse = {
     success: true,

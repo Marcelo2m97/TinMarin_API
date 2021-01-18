@@ -51,6 +51,31 @@ FAQService.create = async ({ question, answer}) => {
   }
 }
 
+FAQService.findByQuestion = async ({ question }) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const faq = FAQModel.findOne({ question: question });
+    if (!faq) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'FAQ not found.'
+        }
+      }
+    } else {
+      serviceResponse.content = faq;
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error("Internal Server Error.");
+  }
+}
+
 FAQService.findAll = async () => {
   let serviceResponse = {
     success: true,
@@ -74,6 +99,7 @@ FAQService.findAll = async () => {
     throw new Error(error);
   }
 }
+
 FAQService.findOneById = async (_id) => {
   let serviceResponse = {
       success: true,

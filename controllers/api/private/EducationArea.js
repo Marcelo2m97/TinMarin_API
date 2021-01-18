@@ -10,6 +10,13 @@ EducationAreaController.create = async (req, res) => {
   }
 
   try {
+    const educationAreaExists = await EducationAreaService.findOneByName(req.body);
+    if (educationAreaExists.success) {
+      return res.status(403).json({
+        error: 'Education area already exists.'
+      })
+    }
+    
     const educationAreaSaved = await EducationAreaService.create(req.body);
     if (!educationAreaSaved.success) {
       return res.status(503).json(educationAreaSaved.content);

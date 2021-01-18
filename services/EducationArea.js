@@ -1,4 +1,4 @@
-const EducationArea = require('./../models/EducationArea');
+const EducationAreaModel = require('./../models/EducationArea');
 
 const EducationAreaService = {};
 
@@ -26,7 +26,7 @@ EducationAreaService.create = async ({ name }) => {
     content: {}
   };
 
-  const educationArea = new EducationArea({ name });
+  const educationArea = new EducationAreaModel({ name });
   try {
     const educationAreaCreated = await educationArea.save();
     if (!educationAreaCreated) {
@@ -46,13 +46,38 @@ EducationAreaService.create = async ({ name }) => {
   }
 }
 
+EducationAreaService.findOneByName = async ({ name }) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try{
+    const educationArea = EducationAreaModel.findOne({ name: name });
+    if (!educationArea) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Education Area not found.'
+        }
+      }
+    } else {
+      serviceResponse.content = educationArea;
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error.')
+  }
+}
+
 EducationAreaService.findAll = async () => {
   let serviceResponse = {
     success: true,
     content: {}
   }
   try {
-    const educationAreas = await EducationArea.find();
+    const educationAreas = await EducationAreaModel.find();
     if (!educationAreas) {
       serviceResponse = {
         success: false,
@@ -77,7 +102,7 @@ EducationAreaService.findOneById = async (_id) => {
   }
 
   try {
-    const educationAreaFound = await EducationArea.findById(_id);
+    const educationAreaFound = await EducationAreaModel.findById(_id);
     if (!educationAreaFound) {
       serviceResponse = {
         success: false,
@@ -99,7 +124,7 @@ EducationAreaService.remove = async (_id) => {
   }
 
   try {
-    const educationAreaDeleted = await EducationArea.findByIdAndDelete(_id).exec();
+    const educationAreaDeleted = await EducationAreaModel.findByIdAndDelete(_id).exec();
     if (!educationAreaDeleted) {
       serviceResponse = {
         success: false,
