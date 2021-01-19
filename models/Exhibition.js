@@ -28,10 +28,14 @@ const ExhibitionSchema = new Schema({
     },
     maximumAge: {
         type: Number,
-        default: 0
+        default: 17
     },
     duration: Number,
     capacity: Number,
+    curiousInfo: {
+        type: String,
+        default: ""
+    }
 }, {
     timestamps: true,
 });

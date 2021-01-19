@@ -53,7 +53,7 @@ EducationAreaService.findOneByName = async ({ name }) => {
   }
 
   try{
-    const educationArea = EducationAreaModel.findOne({ name: name });
+    const educationArea = await EducationAreaModel.findOne({ name: name }).exec();
     if (!educationArea) {
       serviceResponse = {
         success: false,

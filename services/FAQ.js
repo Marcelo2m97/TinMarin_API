@@ -58,7 +58,7 @@ FAQService.findByQuestion = async ({ question }) => {
   }
 
   try {
-    const faq = FAQModel.findOne({ question: question });
+    const faq = await FAQModel.findOne({ question: question }).exec();
     if (!faq) {
       serviceResponse = {
         success: false,

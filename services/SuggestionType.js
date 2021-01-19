@@ -58,7 +58,7 @@ SuggestionTypeService.findOneByName = async ({ name }) => {
   }
 
   try{
-    const suggestionType = SuggestionTypeModel.findOne({ name: name });
+    const suggestionType = await SuggestionTypeModel.findOne({ name: name }).exec();
     if (!suggestionType) {
       serviceResponse = {
         success: false,

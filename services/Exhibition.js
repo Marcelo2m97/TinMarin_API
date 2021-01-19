@@ -22,7 +22,7 @@ ExhibitionService.verifyFields = ({ name, description, images, educationArea, mi
   return serviceResponse;
 }
 
-ExhibitionService.create = async ({ name, description, images, sponsorName, sponsorLogo, educationArea, minimunAge, maximumAge, duration, capacity }) => {
+ExhibitionService.create = async ({ name, description, images, sponsorName, sponsorLogo, educationArea, minimunAge, maximumAge, duration, capacity, curiousInfo }) => {
   let serviceResponse = {
     success: true,
     content: {}
@@ -39,7 +39,8 @@ ExhibitionService.create = async ({ name, description, images, sponsorName, spon
       minimunAge,
       maximumAge,
       duration,
-      capacity
+      capacity,
+      curiousInfo
     });
 
     const newExhibitionWasCreated = await newExhibition.save();
@@ -67,7 +68,7 @@ ExhibitionService.findOneByName = async ({ name }) => {
   }
 
   try{
-    const exhibition = ExhibitionModel.findOne({ name: name });
+    const exhibition = await ExhibitionModel.findOne({ name: name }).exec();
     if (!exhibition) {
       serviceResponse = {
         success: false,

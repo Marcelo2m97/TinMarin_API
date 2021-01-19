@@ -59,7 +59,7 @@ RecommendationService.findByTitle = async ({ title }) => {
   };
 
   try {
-    const recommendation = RecommendationModel.findOne({ title: title });
+    const recommendation = await RecommendationModel.findOne({ title: title }).exec();
     if (!recommendation) {
       serviceResponse = {
         success: false,
