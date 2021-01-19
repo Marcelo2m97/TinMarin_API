@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="../stylesheets/style.css" />
+    <title>Crear Exhibicion</title>
+</head>
+
+<body class="middle">
+    <h1 class="center-h1">Crear Exhibiciones</h1>
+    <form class="flex-column" novalidate>
+        <div class="form-column">
+            <div class="">
+                <label for="validationTooltip01">Nombre Exhibicion</label>
+                <input type="text" class="form-control" id="validationTooltip01" placeholder="Nombre" required>
+                <div class="valid-tooltip">
+                    Looks good!
+                </div>
+            </div>
+            <div>
+                <label for="validationTooltip02">Descripcion</label>
+                <textarea type="text" class="form-control mb-3" id="validationTooltip02" placeholder="Descripcion"
+                    required></textarea>
+                <div class="valid-tooltip">
+                    Looks good!
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-3 mb-3">
+                <label for="validationTooltip03">Edad Minima</label>
+                <input type="number" class="form-control" id="validationTooltip03" placeholder="Edad minima" required>
+                <div class="invalid-tooltip">
+                    Proveer un numero valido
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="validationTooltip04">Edad Maxima</label>
+                <input type="number" class="form-control" id="validationTooltip04" placeholder="Edad Maxima" required>
+                <div class="invalid-tooltip">
+                    Proveer un numero valido.
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="validationTooltip05">Duracion</label>
+                <input type="number" class="form-control" id="validationTooltip05" placeholder="Duracion" required>
+                <div class="invalid-tooltip">
+                    Proveer un numero valido.
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="validationTooltip05">Capacidad</label>
+                <input type="number" class="form-control" id="validationTooltip05" placeholder="Capacidad" required>
+                <div class="invalid-tooltip">
+                    Proveer un numero valido.
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <label for="areaEducacion">Area de educacion</label>
+            <input type="text" class="form-control mb-3" id="areaEducacion" placeholder="Area de educacion"/>
+
+            <label for="patrocinador">Nombre del patrocinador</label>
+            <input type="text" class="form-control mb-3" id="patrocinador" placeholder="Patrocinador"/>
+
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlFile1">Imagen para la exhibicion</label>
+            <input type="file" class="form-control-file" id="exampleFormControlFile1">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlFile2">Imagen para el sponsor</label>
+            <input type="file" class="form-control-file" id="exampleFormControlFile2">
+        </div>
+        <button class="btn btn-primary" type="submit">Crear Exhibicion</button>
+    </form>
+</body>
+
+</html>
