@@ -1,5 +1,4 @@
 const SuggestionTypeModel = require('./../models/SuggestionType');
-const { verifyFields } = require('./Exhibition');
 
 const SuggestionTypeService = {}
 
@@ -21,6 +20,28 @@ SuggestionTypeService.verifyFields = ({ name }) => {
 
     return serviceResponse;
   }
+
+  return serviceResponse;
+}
+
+SuggestionTypeService.verifyUpdate = ({ name }) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  if (!name) {
+    serviceResponse = {
+      success: false,
+      content: {
+        error: 'No changes to make.'
+      }
+    }
+
+    return serviceResponse;
+  }
+
+  if (name) serviceResponse.content.name = name;
 
   return serviceResponse;
 }
@@ -116,11 +137,38 @@ SuggestionTypeService.findOneById = async (_id) => {
           error: 'Suggestion Type not found.'
         }
       }
+    } else {
+      serviceResponse.content = suggestionTypeFound;
     }
   
     return serviceResponse;
   } catch(error) {
     throw new Error('Internal Server Error.')
+  }
+}
+
+SuggestionTypeService.updateOneById = async (suggestionType, newContent) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const updatedSuggestionType = await SuggestionTypeModel.findByIdAndUpdate(suggestionType._id, { ...newContent });
+    if (!updatedSuggestionType) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Something went wrong.'
+        }
+      }
+    } else {
+      serviceResponse.content = await SuggestionTypeModel.findById(suggestionType._id);
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error');
   }
 }
 

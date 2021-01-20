@@ -1,4 +1,5 @@
 const ExhibitionService = require('./../../../services/Exhibition');
+const { verifyId } = require('./../../../utils/MongoUtils');
 
 const ExhibitionController = {};
 
@@ -28,6 +29,40 @@ ExhibitionController.addNewExhibition = async (req, res) => {
     return res.status(500).json({
       error: 'Internal Server Error'
     });
+  }
+}
+
+ExhibitionController.update = async (req, res) => {
+  const { _id } = req.params;
+
+  if (!verifyId(_id)) {
+    return res.status(400).json({
+      error: 'Invalid id.'
+    });
+  }
+
+  const verifiedFields = ExhibitionService.verifyUpdate(req.body);
+
+  if (!verifiedFields.success) {
+    return res.status(400).json(verifiedFields.content);
+  }
+
+  try {
+    const exhibitionExists = await ExhibitionService.findOneById(_id);
+    if (!exhibitionExists.success) {
+      return res.status(404).json(exhibitionExists.content);
+    }
+
+    const exhibitionUpdated = await ExhibitionService.updateOneById(exhibitionExists.content, verifiedFields.content);
+    if (!exhibitionUpdated.success) {
+      return res.status(503).json(exhibitionUpdated.content);
+    }
+
+    return res.status(200).json(exhibitionUpdated.content);
+  } catch(error) {
+    return res.status(500).json({
+      error: 'Internal Server Error.'
+    })
   }
 }
 

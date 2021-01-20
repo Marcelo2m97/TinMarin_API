@@ -22,6 +22,29 @@ FAQService.verifyFields = ({ question, answer }) => {
   return serviceResponse;
 }
 
+FAQService.verifyUpdate = ({ question, answer }) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  if (!question && !answer) {
+    serviceResponse = {
+      success: false,
+      content: {
+        error: 'No changes to make.'
+      }
+    }
+
+    return serviceResponse;
+  }
+
+  if (question) serviceResponse.content.question = question;
+  if (answer) serviceResponse.content.answer = answer;
+
+  return serviceResponse;
+}
+
 FAQService.create = async ({ question, answer}) => {
   let serviceResponse = {
     success: true,
@@ -122,6 +145,31 @@ FAQService.findOneById = async (_id) => {
       return serviceResponse;
   } catch(error) {
       throw new Error('Internal Server Error');
+  }
+}
+
+FAQService.updateOneById = async (faq, newContent) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const updatedFaq = await FAQModel.findByIdAndUpdate(faq._id, { ...newContent });
+    if (!updatedFaq) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Something went wrong.'
+        }
+      }
+    } else {
+      serviceResponse.content = await FAQModel.findById(faq._id).exec();
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error');
   }
 }
 
