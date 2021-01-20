@@ -30,6 +30,40 @@ EducationAreaController.create = async (req, res) => {
   }
 }
 
+EducationAreaController.update = async (req, res) => {
+  const { _id } = req.params;
+
+  if (!verifyId(_id)) {
+    return res.status(400).json({
+      error: 'Invalid id.'
+    });
+  }
+
+  const verifiedFields = EducationAreaService.verifyUpdate(req.body);
+
+  if (!verifiedFields.success) {
+    return res.status(400).json(verifiedFields.content);
+  }
+
+  try {
+    const educationAreaExists = await EducationAreaService.findOneById(_id);
+    if (!educationAreaExists.success) {
+      return res.status(404).json(educationAreaExists.content);
+    }
+
+    const educationAreaUpdated = await EducationAreaService.updateOneById(educationAreaExists.content, verifiedFields.content);
+    if (!educationAreaUpdated.success) {
+      return res.status(503).json(educationAreaUpdated.content);
+    }
+
+    return res.status(200).json(educationAreaUpdated.content);
+  } catch(error) {
+    return res.status(500).json({
+      error: 'Internal Server Error.'
+    })
+  }
+}
+
 EducationAreaController.remove = async (req, res) => {
   if (!verifyId(req.params._id)) {
     return res.status(400).json({

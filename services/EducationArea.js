@@ -20,6 +20,28 @@ EducationAreaService.verifyFields = ({ name }) => {
   return serviceResponse;
 }
 
+EducationAreaService.verifyUpdate = ({ name }) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  if (!name) {
+    serviceResponse = {
+      success: false,
+      content: {
+        error: 'No changes to make.'
+      }
+    }
+
+    return serviceResponse;
+  }
+
+  if (name) serviceResponse.content.name = name;
+
+  return serviceResponse;
+}
+
 EducationAreaService.create = async ({ name }) => {
   let serviceResponse = {
     success: true,
@@ -110,12 +132,39 @@ EducationAreaService.findOneById = async (_id) => {
           error: 'Education area not found.'
         }
       };
+    } else {
+      serviceResponse.content = educationAreaFound;
     }
     return serviceResponse;
   } catch(error) {
     throw new Error('Internal Server Error');
   }
-} 
+}
+
+EducationAreaService.updateOneById = async (educationArea, newContent) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const updatedEducationArea = await EducationAreaModel.findByIdAndUpdate(educationArea._id, { ...newContent });
+    if (!updatedEducationArea) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Something went wrong.'
+        }
+      }
+    } else {
+      serviceResponse.content = EducationAreaModel.findById(educationArea._id).exec();
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error');
+  }
+}
 
 EducationAreaService.remove = async (_id) => {
   let serviceResponse = {

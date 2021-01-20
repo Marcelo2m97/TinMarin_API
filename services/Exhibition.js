@@ -22,6 +22,38 @@ ExhibitionService.verifyFields = ({ name, description, images, educationArea, mi
   return serviceResponse;
 }
 
+ExhibitionService.verifyUpdate = ({ name, description, images, sponsorName, sponsorLogo, educationArea, minimunAge, maximumAge, duration, capacity, curiousInfo }) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  if (!name && !description && !images && !sponsorName && !sponsorLogo && !educationArea && !minimunAge && !maximumAge && !duration && !capacity && !curiousInfo) {
+    serviceResponse = {
+      success: false,
+      content: {
+        error: 'No changes to make.'
+      }
+    }
+
+    return serviceResponse;
+  }
+
+  if (name) serviceResponse.content.name = name;
+  if (description) serviceResponse.content.description = description;
+  if (images) serviceResponse.content.images = images;
+  if (sponsorName) serviceResponse.content.sponsorName = sponsorName;
+  if (sponsorLogo) serviceResponse.content.sponsorLogo = sponsorLogo;
+  if (educationArea) serviceResponse.content.educationArea = educationArea;
+  if (minimunAge) serviceResponse.content.minimunAge = minimunAge;
+  if (maximumAge) serviceResponse.content.maximumAge = maximumAge;
+  if (duration) serviceResponse.content.duration = duration;
+  if (capacity) serviceResponse.content.capacity = capacity;
+  if (curiousInfo) serviceResponse.content.curiousInfo = curiousInfo;
+
+  return serviceResponse;
+}
+
 ExhibitionService.create = async ({ name, description, images, sponsorName, sponsorLogo, educationArea, minimunAge, maximumAge, duration, capacity, curiousInfo }) => {
   let serviceResponse = {
     success: true,
@@ -153,6 +185,31 @@ ExhibitionService.findOneById = async (_id) => {
       }
     } else {
       serviceResponse.content = exhibition;
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error');
+  }
+}
+
+ExhibitionService.updateOneById = async (exhibition, newContent) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const updatedExhibition = await ExhibitionModel.findByIdAndUpdate(exhibition._id, { ...newContent });
+    if (!updatedExhibition) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Something went wrong.'
+        }
+      }
+    } else {
+      serviceResponse.content = await ExhibitionModel.findById(exhibition._id).exec();
     }
 
     return serviceResponse;

@@ -29,6 +29,40 @@ SuggestionTypeController.create = async (req, res) => {
   }
 }
 
+SuggestionTypeController.update = async (req, res) => {
+  const { _id } = req.params;
+
+  if (!verifyId(_id)) {
+    return res.status(400).json({
+      error: 'Invalid id.'
+    });
+  }
+
+  const verifiedFields = SuggestionTypeService.verifyUpdate(req.body);
+
+  if (!verifiedFields.success) {
+    return res.status(400).json(verifiedFields.content);
+  }
+
+  try {
+    const SuggestionTypeExists = await SuggestionTypeService.findOneById(_id);
+    if (!SuggestionTypeExists.success) {
+      return res.status(404).json(SuggestionTypeExists.content);
+    }
+
+    const SuggestionTypeUpdated = await SuggestionTypeService.updateOneById(SuggestionTypeExists.content, verifiedFields.content);
+    if (!SuggestionTypeUpdated.success) {
+      return res.status(503).json(SuggestionTypeUpdated.content);
+    }
+
+    return res.status(200).json(SuggestionTypeUpdated.content);
+  } catch(error) {
+    return res.status(500).json({
+      error: 'Internal Server Error.'
+    })
+  }
+}
+
 SuggestionTypeController.remove = async (req, res) => {
   if (!verifyId(req.params._id)) {
     res.status(400).json({
