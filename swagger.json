@@ -1795,11 +1795,18 @@
                   "type": "array",
                   "items": {
                     "properties": {
+                      "steps": {
+                        "type": "array",
+                        "example": [
+                          "Paso 1 de la recomendación.",
+                          "Paso 2 de la recomendación."
+                        ]
+                      },
                       "description": {
                         "type": "array",
                         "example": [
-                          "Párrafo 1",
-                          "Párrafo 2"
+                          "Párrafo 1 de la recomendación.",
+                          "Párrafo 2 de la recomendación."
                         ]
                       },
                       "source": {
@@ -1866,8 +1873,15 @@
                   "description": {
                     "type": "array",
                     "example": [
-                      "Primer párrafo de la recomendación.",
-                      "Segundo párrafo de la recomendación"
+                      "Párrafo 1 de la recomendación.", 
+                      "Párrafo 2 de la recomendación."
+                    ]
+                  },
+                  "steps": {
+                    "type": "array",
+                    "example": [
+                      "Paso 1 de la recomendación.",
+                      "Paso 2 de la recomendación"
                     ]
                   },
                   "source": {
@@ -1882,6 +1896,7 @@
                 "required": [
                   "title",
                   "description",
+                  "steps",
                   "source",
                   "image"
                 ]
@@ -1896,11 +1911,11 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "description": {
+                    "steps": {
                       "type": "array",
                       "example": [
-                        "Primer párrafo de la recomendación.",
-                        "Segundo párrafo de la recomendación"
+                        "Paso 1 de la recomendación.",
+                        "Paso 2 de la recomendación."
                       ]
                     },
                     "source": {
@@ -1918,6 +1933,13 @@
                     "title": {
                       "type": "string",
                       "example": "Título de la recomendación del Tin Marín"
+                    },
+                    "description": {
+                      "type": "array",
+                      "example": [
+                        "Primer párrafo de la recomendación.", 
+                        "Segundo párrafo de la recomendación."
+                      ]
                     },
                     "createdAt": {
                       "type": "string",
@@ -1984,7 +2006,14 @@
                     "type": "array",
                     "example": [
                       "Primer párrafo de la recomendación.",
-                      "Segundo párrafo de la recomendación"
+                      "Segundo párrafo de la recomendación."
+                    ]
+                  },
+                  "steps": {
+                    "type": "array",
+                    "example": [
+                      "Paso 1 de la recomendación.",
+                      "Paso 2 de la recomendación"
                     ]
                   },
                   "source": {
@@ -2013,6 +2042,13 @@
                       "example": [
                         "Primer párrafo de la recomendación.",
                         "Segundo párrafo de la recomendación"
+                      ]
+                    },
+                    "steps": {
+                      "type": "array",
+                      "example": [
+                        "Paso 1 de la recomendación.",
+                        "Paso 2 de la recomendación"
                       ]
                     },
                     "source": {
