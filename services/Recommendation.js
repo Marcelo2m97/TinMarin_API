@@ -2,13 +2,13 @@ const RecommendationModel = require('./../models/Recommendation');
 
 const RecommendationService = {};
 
-RecommendationService.verifyContent = ({ title, description, source, image }) => {
+RecommendationService.verifyContent = ({ title, description, steps, source, image }) => {
   let serviceResponse = {
     success: true,
     content: {}
   };
 
-  if (!title || !description || !source || !image) {
+  if (!title || !description || !steps || !source || !image) {
     serviceResponse = {
       success: false,
       content: {
@@ -20,7 +20,32 @@ RecommendationService.verifyContent = ({ title, description, source, image }) =>
   return serviceResponse;
 }
 
-RecommendationService.create = async ({ title, description, source, image }) => {
+RecommendationService.verifyUpdate = ({ title, description, steps, source, image }) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  if (!title && !description && !steps&& !source && !image) {
+    serviceResponse = {
+      success: false,
+      content: {
+        error: 'No changes to make.'
+      }
+    }
+
+    return serviceResponse;
+  }
+
+  if (title) serviceResponse.content.title = title;
+  if (description) serviceResponse.content.description = description;
+  if (source) serviceResponse.content.source = source;
+  if (image) serviceResponse.content.image = image;
+
+  return serviceResponse;
+}
+
+RecommendationService.create = async ({ title, description, steps, source, image }) => {
   let serviceResponse = {
     success: true,
     content: {}
@@ -29,6 +54,7 @@ RecommendationService.create = async ({ title, description, source, image }) => 
   const recommendation = new RecommendationModel({
     title,
     description,
+    steps,
     source,
     image
   });
@@ -124,6 +150,31 @@ RecommendationService.findOneById = async (_id) => {
       return serviceResponse;
   } catch(error) {
       throw new Error('Internal Server Error');
+  }
+}
+
+RecommendationService.updateOneById = async (recommendation, newContent) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const updatedRecommendation = await RecommendationModel.findByIdAndUpdate(recommendation._id, { ...newContent })
+    if (!updatedRecommendation) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Something went wrong.'
+        }
+      }
+    } else {
+      serviceResponse.content = await RecommendationModel.findById(recommendation._id);
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error');
   }
 }
 

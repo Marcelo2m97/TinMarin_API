@@ -1,4 +1,5 @@
 const FAQService = require('./../../../services/FAQ');
+const { verifyId } = require('./../../../utils/MongoUtils');
 
 const FAQController = {};
 
@@ -24,6 +25,40 @@ FAQController.create = async (req, res) => {
     return res.status(500).json({
       error: 'Internal Server Error.'
     });
+  }
+}
+
+FAQController.update = async (req, res) => {
+  const { _id } = req.params;
+
+  if (!verifyId(_id)) {
+    return res.status(400).json({
+      error: 'Invalid id.'
+    });
+  }
+
+  const verifiedFields = FAQService.verifyUpdate(req.body);
+
+  if (!verifiedFields.success) {
+    return res.status(400).json(verifiedFields.content);
+  }
+
+  try {
+    const FAQExists = await FAQService.findOneById(_id);
+    if (!FAQExists.success) {
+      return res.status(404).json(FAQExists.content);
+    }
+
+    const FAQUpdated = await FAQService.updateOneById(FAQExists.content, verifiedFields.content);
+    if (!FAQUpdated.success) {
+      return res.status(503).json(FAQUpdated.content);
+    }
+
+    return res.status(200).json(FAQUpdated.content);
+  } catch(error) {
+    return res.status(500).json({
+      error: 'Internal Server Error.'
+    })
   }
 }
 

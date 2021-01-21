@@ -10,6 +10,10 @@ const RecommendationSchema = new Schema({
         type: String,
         required: true
     }],
+    steps: [{
+        type: String,
+        required: true
+    }],
     source: {
         type: String,
         default: "Tin Marín"
