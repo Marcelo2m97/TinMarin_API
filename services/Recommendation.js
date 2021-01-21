@@ -2,13 +2,13 @@ const RecommendationModel = require('./../models/Recommendation');
 
 const RecommendationService = {};
 
-RecommendationService.verifyContent = ({ title, description, source, image }) => {
+RecommendationService.verifyContent = ({ title, description, steps, source, image }) => {
   let serviceResponse = {
     success: true,
     content: {}
   };
 
-  if (!title || !description || !source || !image) {
+  if (!title || !description || !steps || !source || !image) {
     serviceResponse = {
       success: false,
       content: {
@@ -20,13 +20,13 @@ RecommendationService.verifyContent = ({ title, description, source, image }) =>
   return serviceResponse;
 }
 
-RecommendationService.verifyUpdate = ({ title, description, source, image }) => {
+RecommendationService.verifyUpdate = ({ title, description, steps, source, image }) => {
   let serviceResponse = {
     success: true,
     content: {}
   }
 
-  if (!title && !description && !source && !image) {
+  if (!title && !description && !steps&& !source && !image) {
     serviceResponse = {
       success: false,
       content: {
@@ -45,7 +45,7 @@ RecommendationService.verifyUpdate = ({ title, description, source, image }) => 
   return serviceResponse;
 }
 
-RecommendationService.create = async ({ title, description, source, image }) => {
+RecommendationService.create = async ({ title, description, steps, source, image }) => {
   let serviceResponse = {
     success: true,
     content: {}
@@ -54,6 +54,7 @@ RecommendationService.create = async ({ title, description, source, image }) => 
   const recommendation = new RecommendationModel({
     title,
     description,
+    steps,
     source,
     image
   });
