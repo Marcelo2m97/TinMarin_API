@@ -17,6 +17,12 @@ connect();
 
 const app = express();
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 app.use(logger('dev'));
 app.use(express.json());
@@ -27,5 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api', apiRouter);
 app.use(AuthMiddleware.verifyAuth);
 app.use('/api', apiPrivateRouter);
+
+
 
 module.exports = app;
