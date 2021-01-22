@@ -1,5 +1,14 @@
+const Fuse = require('fuse.js');
+
 const ExhibitionModel = require('./../models/Exhibition');
 
+const options = {
+  isCaseSensitive: false,
+  includeUnderscore: false,
+  keys: [
+    'name'
+  ]
+}
 const ExhibitionService = {};
 
 ExhibitionService.verifyFields = ({ name, description, images, educationArea, minimunAge, maximumAge, duration, capacity }) => {
@@ -150,8 +159,8 @@ ExhibitionService.findByName = async (name) => {
   }
 
   try {
-    const exhibition = await ExhibitionModel.find({ name: { $regex: name } });
-    if (!exhibition) {
+    const exhibitions = await ExhibitionModel.find();
+    if (!exhibitions) {
       serviceResponse = {
         success: false,
         content: {
@@ -159,7 +168,8 @@ ExhibitionService.findByName = async (name) => {
         }
       }
     } else {
-      serviceResponse.content = exhibition;
+      const fuse = new Fuse(exhibitions, options);
+      serviceResponse.content = fuse.search(name);
     }
 
     return serviceResponse;
