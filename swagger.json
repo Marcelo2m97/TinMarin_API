@@ -20,6 +20,15 @@
       "description": "Servidor de producción."
     }
   ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT" 
+      }
+    }
+  }, 
   "basePath": "/api/v1",
   "paths": {
     "/api/v1/auth/login": {
@@ -89,6 +98,9 @@
         "tags": [
           "Usuario"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Registrar un usuario.",
         "description": "Registro de un usuario en la base de datos.",
         "requestBody": {
@@ -201,6 +213,9 @@
         "tags": [
           "Área de educación"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Crear nueva área de educación.",
         "description": "Crea una nueva area de educación en la base de datos. Necesita que se le provea mediante el cuerpo de la petición el nombre de la área de educación, el cual debe ser único. El área de educación creada se mostrará únicamente en la caja desplegable en la interfaz de administrador para la creación de exhibiciones.",
         "requestBody": {
@@ -274,6 +289,9 @@
         "tags": [
           "Área de educación"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Actualiza el nombre de un área de educación en específico.",
         "description": "Actualiza el nombre de un área de educación en específico de las áreas almacenadas en la base de datos.",
         "parameters": [
@@ -356,6 +374,9 @@
         "tags": [
           "Área de educación"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Elimina un área de educación en específico.",
         "description": "Elimina un área de educación en específico de las áreas almacenadas en la base de datos.",
         "parameters": [
@@ -530,6 +551,9 @@
         "tags": [
           "Cuartos de exhibición"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Crear un nuevo cuarto de exhibición.",
         "description": "Crea un nuevo cuarto de exhibición en la base de datos. Los cuartos de exhibición son grupos con exhibiciones escogidas por el usuario para el caso en que algún colegio, iglesia o comunidad quiera estudiar sobre exhibiciones específicas del museo podrá crear el cuarto con las exhibiciones que le parezcan. El código del cuarto es utilizado para el acceso al cuarto por otros usuarios.",
         "requestBody": {
@@ -618,6 +642,9 @@
         "tags": [
           "Cuartos de exhibición"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Elimina un cuarto de exhibición en específico.",
         "description": "Elimina un cuarto de exhibición en específico de las áreas almacenadas en la base de datos.",
         "parameters": [
@@ -871,6 +898,9 @@
         "tags": [
           "Exhibiciones"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Crear una nueva exhibición.",
         "description": "Crea una nueva exhibición en la base de datos.",
         "requestBody": {
@@ -1029,6 +1059,9 @@
         "tags": [
           "Exhibiciones"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Actualiza la información de una exhibición en específico.",
         "description": "Actualiza la información de una exhibición en específico de las exhibiciones almacenadas en la base de datos.",
         "parameters": [
@@ -1187,6 +1220,9 @@
         "tags": [
           "Exhibiciones"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Elimina una exhibición en específico.",
         "description": "Elimina una exhibición en específico de las exhibiciones almacenadas en la base de datos.",
         "parameters": [
@@ -1283,6 +1319,9 @@
         "tags": [
           "FAQ"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Crear una nueva pregunta frecuente.",
         "description": "Crea una nueva pregunta frecuente en la base de datos.",
         "requestBody": {
@@ -1365,6 +1404,9 @@
         "tags": [
           "FAQ"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Actualiza la información de una pregunta frecuente.",
         "description": "Actualiza la información de una pregunta frecuente en específico de las almacenadas en la base de datos.",
         "parameters": [
@@ -1456,6 +1498,9 @@
         "tags": [
           "FAQ"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Elimina una pregunta frecuente en específico.",
         "description": "Elimina una pregunta frecuente en específico de las almacenadas en la base de datos.",
         "parameters": [
@@ -1556,6 +1601,9 @@
         "tags": [
           "Sitios web recomendados"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Crear un nuevo enlace a sitio web recomendado por el Tin Marín.",
         "description": "Crear un nuevo enlace a sitio web recomendado por el Tin Marín en la base de datos.",
         "requestBody": {
@@ -1644,6 +1692,9 @@
         "tags": [
           "Sitios web recomendados"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Actualiza la información de un sitio web recomendado.",
         "description": "Actualiza la información de un sitio web recomendado en específico de los almacenados en la base de datos.",
         "parameters": [
@@ -1743,6 +1794,9 @@
         "tags": [
           "Sitios web recomendados"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Elimina un sitio web recomendado por el Tin Marín en específico.",
         "description": "Elimina un sitio web recomendado por el Tin Marín en específico de los almacenados en la base de datos.",
         "parameters": [
@@ -1857,6 +1911,9 @@
         "tags": [
           "Recomendaciones"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Crear una nueva recomendación.",
         "description": "Crear una nueva recomendación en la base de datos.",
         "requestBody": {
@@ -1978,6 +2035,9 @@
         "tags": [
           "Recomendaciones"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Actualiza la información de una recomendación.",
         "description": "Actualiza la información de una recomendación en específico de los almacenados en la base de datos.",
         "parameters": [
@@ -2102,6 +2162,9 @@
         "tags": [
           "Recomendaciones"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Elimina una recomendación del Tin Marín en específico.",
         "description": "Elimina una recomendación del Tin Marín en específico de las almacenadas en la base de datos.",
         "parameters": [
@@ -2222,6 +2285,9 @@
         "tags": [
           "Sugerencias"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Consulta todas las sugerencias hechas por el Tin Marín.",
         "description": "Consulta todas las sugerencias hechas por el Tin Marín almacenadas en la base de datos.",
         "responses": {
@@ -2277,6 +2343,9 @@
         "tags": [
           "Sugerencias"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Elimina una sugerencia específica hecha al Tin Marín.",
         "description": "Elimina una sugerencia específica hecha al Tin Marín de las almacenadas en la base de datos.",
         "parameters": [
@@ -2369,6 +2438,9 @@
         "tags": [
           "Tipos de sugerencia"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Crear un nuevo tipo de sugerencia.",
         "description": "Crear un nuevo top de sugerencia en la base de datos. Es necesario no repetir el nombre del tipo de sugerencia con uno ya almacenado en la base de datos.",
         "requestBody": {
@@ -2442,6 +2514,9 @@
         "tags": [
           "Tipos de sugerencia"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Actualiza el nombre de un tipo de sugerencia.",
         "description": "Actualiza el nombre de un tipo de sugerencia en específico de los almacenados en la base de datos.",
         "parameters": [
@@ -2524,6 +2599,9 @@
         "tags": [
           "Tipos de sugerencia"
         ],
+        "security": {
+          "bearerAuth": []
+        },
         "summary": "Elimina un tipo de sugerencia en específico.",
         "description": "Elimina un tipo de sugerencia en específico de los almacenados en la base de datos.",
         "parameters": [
