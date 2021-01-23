@@ -1,14 +1,5 @@
-const Fuse = require('fuse.js');
-
 const ExhibitionModel = require('./../models/Exhibition');
 
-const options = {
-  isCaseSensitive: false,
-  includeUnderscore: false,
-  keys: [
-    'name'
-  ]
-}
 const ExhibitionService = {};
 
 ExhibitionService.verifyFields = ({ name, description, images, educationArea, minimunAge, maximumAge, duration, capacity }) => {
@@ -31,13 +22,13 @@ ExhibitionService.verifyFields = ({ name, description, images, educationArea, mi
   return serviceResponse;
 }
 
-ExhibitionService.verifyUpdate = ({ name, description, images, sponsorName, sponsorLogo, educationArea, minimunAge, maximumAge, duration, capacity, curiousInfo }) => {
+ExhibitionService.verifyUpdate = ({ name, lowercaseName, description, images, sponsorName, sponsorLogo, educationArea, minimunAge, maximumAge, duration, capacity, curiousInfo }) => {
   let serviceResponse = {
     success: true,
     content: {}
   }
 
-  if (!name && !description && !images && !sponsorName && !sponsorLogo && !educationArea && !minimunAge && !maximumAge && !duration && !capacity && !curiousInfo) {
+  if (!name && !lowercaseName && !description && !images && !sponsorName && !sponsorLogo && !educationArea && !minimunAge && !maximumAge && !duration && !capacity && !curiousInfo) {
     serviceResponse = {
       success: false,
       content: {
@@ -49,6 +40,7 @@ ExhibitionService.verifyUpdate = ({ name, description, images, sponsorName, spon
   }
 
   if (name) serviceResponse.content.name = name;
+  if (lowercaseName) serviceResponse.content.lowercaseName = lowercaseName;
   if (description) serviceResponse.content.description = description;
   if (images) serviceResponse.content.images = images;
   if (sponsorName) serviceResponse.content.sponsorName = sponsorName;
@@ -69,9 +61,11 @@ ExhibitionService.create = async ({ name, description, images, sponsorName, spon
     content: {}
   }
 
+  const lowercaseName = name.toLowerCase();
   try {
     const newExhibition = new ExhibitionModel({
       name,
+      lowercaseName,
       description,
       images,
       sponsorName,
@@ -157,9 +151,9 @@ ExhibitionService.findByName = async (name) => {
     success: true,
     content: {}
   }
-
+  const lowercaseName = name.toLowerCase();
   try {
-    const exhibitions = await ExhibitionModel.find();
+    const exhibitions = await ExhibitionModel.find({ lowercaseName: { $regex: lowercaseName } });
     if (!exhibitions) {
       serviceResponse = {
         success: false,
@@ -168,8 +162,7 @@ ExhibitionService.findByName = async (name) => {
         }
       }
     } else {
-      const fuse = new Fuse(exhibitions, options);
-      serviceResponse.content = fuse.search(name);
+      serviceResponse.content = exhibitions;
     }
 
     return serviceResponse;

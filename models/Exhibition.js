@@ -7,6 +7,10 @@ const ExhibitionSchema = new Schema({
         required: true,
         unique: true
     },
+    lowercaseName: {
+        type: String,
+        required: true
+    },
     description: {
         type: String,
         required: true
