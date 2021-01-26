@@ -4,8 +4,7 @@ const Schema = mongoose.Schema;
 const SuggestionSchema = new Schema({
     suggestionType: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     suggestion: {
         type: String,
