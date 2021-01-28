@@ -459,8 +459,11 @@
                               }
                             },
                             "sponsorName": {
-                              "type": "string",
-                              "example": "Hospital de El Salvador"
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "example": "Hospital de El Salvador"
+                              }
                             },
                             "sponsorLogo": {
                               "type": "array",
@@ -484,6 +487,10 @@
                               "type": "number",
                               "example": 17
                             },
+                            "curiousInfo": {
+                              "type": "string",
+                              "example": "Esto es un dato curioso del hospital de El Salvador."
+                            },
                             "_id": {
                               "type": "string",
                               "example": "5fd455744052b828f0a93f89"
@@ -492,9 +499,21 @@
                               "type": "string",
                               "example": "El Hospitalito"
                             },
+                            "lowercaseName": {
+                              "type": "string",
+                              "example": "el hospitalito"
+                            },
                             "description": {
                               "type": "string",
                               "example": "Descripción del Hospitalito."
+                            },
+                            "duration": {
+                              "type": "number",
+                              "example": 20
+                            },
+                            "capacity": {
+                              "type": "number",
+                              "example": 15
                             },
                             "createdAt": {
                               "type": "string",
@@ -751,6 +770,10 @@
                         "type": "number",
                         "example": 17
                       },
+                      "curiousInfo": {
+                        "type": "string",
+                        "example": "Esto es un dato curioso del hospital de El Salvador."
+                      },
                       "_id": {
                         "type": "string",
                         "example": "5fd455744052b828f0a93f89"
@@ -763,6 +786,14 @@
                         "type": "string",
                         "example": "Descripción del Hospitalito."
                       },
+                      "duration": {
+                        "type": "number",
+                        "example": 15
+                      },
+                      "capacity": {
+                        "type": "number",
+                        "example": 10
+                      },
                       "createdAt": {
                         "type": "string",
                         "example": "2020-12-12T05:30:28.207Z"
@@ -774,6 +805,10 @@
                       "__v": {
                         "type": "number",
                         "example": 0
+                      },
+                      "lowercaseName": {
+                        "type": "string",
+                        "example": "el hospitalito"
                       }
                     }
                   }
@@ -855,6 +890,10 @@
                       "type": "number",
                       "example": 17
                     },
+                    "curiousInfo": {
+                      "type": "string",
+                      "example": "Esto es un dato curioso del hospital de El Salvador."
+                    },
                     "_id": {
                       "type": "string",
                       "example": "5fd455744052b828f0a93f89"
@@ -867,6 +906,14 @@
                       "type": "string",
                       "example": "Descripción del Hospitalito."
                     },
+                    "duration": {
+                      "type": "number",
+                      "example": 15
+                    },
+                    "capacity": {
+                      "type": "number",
+                      "example": 10
+                    },
                     "createdAt": {
                       "type": "string",
                       "example": "2020-12-12T05:30:28.207Z"
@@ -878,6 +925,10 @@
                     "__v": {
                       "type": "number",
                       "example": 0
+                    },
+                    "lowercaseName": {
+                      "type": "string",
+                      "example": "el hospitalito"
                     }
                   }
                 }
@@ -952,6 +1003,10 @@
                   "capacity": {
                     "type": "number",
                     "example": 15
+                  },
+                  "curiousInfo": {
+                    "type": "string",
+                    "example": "Esto es un dato curioso del hospital de El Salvador."
                   }
                 },
                 "required": [
@@ -975,44 +1030,68 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "_id": {
-                      "type": "string",
-                      "example": "5fd455744052b828f0a93f29"
-                    },
-                    "name": {
-                      "type": "string",
-                      "example": "El Teatrino"
-                    },
-                    "description": {
-                      "type": "string",
-                      "example": "¡El Telón se abrió, es momento de que la obra inicie! Usa títeres..."
-                    },
                     "images": {
                       "type": "array",
-                      "example": "www.url.com/imagendelteatrino"
+                      "items": {
+                        "type": "string",
+                        "example": "www.url.com/imagendelhospitalito"
+                      }
+                    },
+                    "rating": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": 0
+                      }
                     },
                     "sponsorName": {
                       "type": "array",
-                      "example": ["Literatura para todos"]
+                      "items": {
+                        "type": "string",
+                        "example": "Hospital de El Salvador"
+                      }
                     },
                     "sponsorLogo": {
                       "type": "array",
-                      "example": ["www.url.com/imagendeliteraturaparatodos"]
+                      "items": {
+                        "type": "string",
+                        "example": "www.url.com/imagendelhospitaldeelsalvador"
+                      }
                     },
                     "educationArea": {
                       "type": "array",
-                      "example": [
-                        "Arte",
-                        "Expresion y oratoria"
-                      ]
+                      "items": {
+                        "type": "string",
+                        "example": "Medicina"
+                      }
                     },
                     "minimunAge": {
                       "type": "number",
-                      "example": 3
+                      "example": 4
                     },
                     "maximumAge": {
                       "type": "number",
                       "example": 17
+                    },
+                    "curiousInfo": {
+                      "type": "string",
+                      "example": "Esto es un dato curioso del hospital de El Salvador."
+                    },
+                    "_id": {
+                      "type": "string",
+                      "example": "5fd455744052b828f0a93f89"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "El Hospitalito"
+                    },
+                    "lowercaseName": {
+                      "type": "string",
+                      "example": "el hospitalito"
+                    },
+                    "description": {
+                      "type": "string",
+                      "example": "Descripción del Hospitalito."
                     },
                     "duration": {
                       "type": "number",
