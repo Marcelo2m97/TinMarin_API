@@ -1,7 +1,20 @@
 const RecommendationModel = require('./../models/Recommendation');
 
+/**
+ * Este objeto contiene las funciones del servicio de recomendaciones.
+ */
 const RecommendationService = {};
 
+/**
+ * 
+ * @function
+ * @param {string} title
+ * @param {Array} description
+ * @param {Array} steps
+ * @param {string} source
+ * @param {string} image
+ * @returns {Object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
 RecommendationService.verifyContent = ({ title, description, steps, source, image }) => {
   let serviceResponse = {
     success: true,
@@ -20,6 +33,16 @@ RecommendationService.verifyContent = ({ title, description, steps, source, imag
   return serviceResponse;
 }
 
+/**
+ * 
+ * @function
+ * @param {string} title
+ * @param {Array} description
+ * @param {Array} steps
+ * @param {string} source
+ * @param {string} image
+ * @returns {Object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
 RecommendationService.verifyUpdate = ({ title, description, steps, source, image }) => {
   let serviceResponse = {
     success: true,
@@ -45,6 +68,17 @@ RecommendationService.verifyUpdate = ({ title, description, steps, source, image
   return serviceResponse;
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} title
+ * @param {Array} description
+ * @param {Array} steps
+ * @param {string} source
+ * @param {string} image
+ * @returns {Object} La recomendación creada.
+ */
 RecommendationService.create = async ({ title, description, steps, source, image }) => {
   let serviceResponse = {
     success: true,
@@ -78,6 +112,13 @@ RecommendationService.create = async ({ title, description, steps, source, image
 
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} title
+ * @returns {Object} La recomendación con el título especificado.
+ */
 RecommendationService.findByTitle = async ({ title }) => {
   let serviceResponse = {
     success: true,
@@ -103,6 +144,12 @@ RecommendationService.findByTitle = async ({ title }) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @returns {Array} Lista con las recomendaciones existentes
+ */
 RecommendationService.findAll = async () => {
   let serviceResponse = {
     success: true,
@@ -128,6 +175,13 @@ RecommendationService.findAll = async () => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id
+ * @returns {Object} La recomendación con el _id especificado.
+ */
 RecommendationService.findOneById = async (_id) => {
   let serviceResponse = {
     success: true,
@@ -153,6 +207,14 @@ RecommendationService.findOneById = async (_id) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {object} recommendation
+ * @param {object} newContent
+ * @returns {object} La recomendación actualizada.
+ */
 RecommendationService.updateOneById = async (recommendation, newContent) => {
   let serviceResponse = {
     success: true,
@@ -178,6 +240,13 @@ RecommendationService.updateOneById = async (recommendation, newContent) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id 
+ * @returns {Array} Lista vacía.
+ */
 RecommendationService.remove = async (_id) => {
   let serviceResponse = {
     success: true,

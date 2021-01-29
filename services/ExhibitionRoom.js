@@ -1,7 +1,17 @@
 const ExhibitionRoomModel = require('./../models/ExhibitionRoom');
 
+/**
+ * Este objeto contiene las funciones del servicio de cuartos de exhibiciones.
+ */
 const ExhibitionRoomService = {};
 
+/**
+ * 
+ * @function
+ * @param {string} roomCode
+ * @param {string} exhibitions
+ * @returns {Object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
 ExhibitionRoomService.verifyFields = ({ roomCode, exhibitions }) => {
   let serviceResponse = {
     success: true,
@@ -30,6 +40,14 @@ ExhibitionRoomService.verifyFields = ({ roomCode, exhibitions }) => {
   return serviceResponse;
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} roomCode
+ * @param {Array} exhibitions
+ * @returns {Object} El cuarto de exhibición creado.
+ */
 ExhibitionRoomService.create = async ({ roomCode, exhibitions }) => {
   let serviceResponse = {
     success: true,
@@ -60,6 +78,13 @@ ExhibitionRoomService.create = async ({ roomCode, exhibitions }) => {
 
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} roomCode
+ * @returns {Object} El cuarto de exhibición con el código de cuarto especificado.
+ */
 ExhibitionRoomService.findOneExhibitionRoomByRoomCode = async (roomCode) => {
   let serviceResponse = {
     success: true,
@@ -88,6 +113,12 @@ ExhibitionRoomService.findOneExhibitionRoomByRoomCode = async (roomCode) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @returns {Array} Lista con los cuartos de exhibición existentes
+ */
 ExhibitionRoomService.findAll = async () => {
   let serviceResponse = {
     success: true,
@@ -116,6 +147,13 @@ ExhibitionRoomService.findAll = async () => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id
+ * @returns {Object} El cuarto de exhibición con el _id especificado.
+ */
 ExhibitionRoomService.findOneById = async (_id) => {
   let serviceResponse = {
     success: true,
@@ -141,6 +179,13 @@ ExhibitionRoomService.findOneById = async (_id) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id 
+ * @returns {Array} Lista vacía.
+ */
 ExhibitionRoomService.remove = async (_id) => {
   let serviceResponse = {
       success: true,

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: services/RecommendedWebsite.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: services/RecommendedWebsite.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const RecommendedWebsiteModel = require('./../models/RecommendedWebsite');
+
+/**
+ * Este objeto contiene las funciones del servicio de sitios web recomendados.
+ */
+const RecommendedWebsiteService = {};
+
+/**
+ * 
+ * @function
+ * @param {string} url
+ * @param {string} images
+ * @param {string} title 
+ * @returns {Object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
+RecommendedWebsiteService.verifyFields = ({ url, image, title }) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  };
+
+  if (!url || !image || !title) {
+    serviceResponse = {
+      success: false,
+      content: {
+        error: 'Missing required fields. Request must have the url of the website or article, an image and a title for the website or article.'
+      }
+    }
+  }
+
+  return serviceResponse;
+}
+
+/**
+ * 
+ * @function
+ * @param {string} url
+ * @param {string} images
+ * @param {string} title 
+ * @returns {Object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
+RecommendedWebsiteService.verifyUpdate = ({ url, image, title }) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  if (!url &amp;&amp; !image &amp;&amp; !title) {
+    serviceResponse = {
+      success: false,
+      content: {
+        error: 'No changes to make.'
+      }
+    }
+
+    return serviceResponse;
+  }
+
+  if (url) serviceResponse.content.url = url;
+  if (image) serviceResponse.content.image = image;
+  if (title) serviceResponse.content.title = title;
+
+  return serviceResponse;
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} url
+ * @param {string} image
+ * @param {string} title
+ * @returns {Object} El sitio web recomendado creado.
+ */
+RecommendedWebsiteService.create = async ({ url, image, title }) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  const recommendedWebsite = new RecommendedWebsiteModel({
+    url,
+    image,
+    title
+  });
+  try {
+    const recommendedWebsiteSaved = await recommendedWebsite.save();
+    if (!recommendedWebsiteSaved) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Recommended Website could not be created.'
+        }
+      }
+    } else {
+      serviceResponse.content = recommendedWebsiteSaved;
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error(error);
+  }
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @returns {Array} Lista con los sitios web recomendados existentes
+ */
+RecommendedWebsiteService.findAll = async () => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const recommendedWebsites = await RecommendedWebsiteModel.find();
+    if (!recommendedWebsites) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'No recommended websites found'
+        }
+      };
+    } else {
+      serviceResponse.content = recommendedWebsites;
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error(error);
+  }
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id
+ * @returns {Object} El sitio web recomendado con el _id especificado.
+ */
+RecommendedWebsiteService.findOneById = async (_id) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+      const recommendedWebsite = await RecommendedWebsiteModel.findOne({ _id: _id }).exec();
+      if (!recommendedWebsite) {
+          serviceResponse = {
+              success: false,
+              content: {
+                  error: 'Exhibition not found.'
+              }
+          }
+      } else {
+          serviceResponse.content = recommendedWebsite;
+      }
+
+      return serviceResponse;
+  } catch(error) {
+      throw new Error('Internal Server Error');
+  }
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @param {object} recommendedWebsite
+ * @param {object} newContent
+ * @returns {object} El sitio web recomendado actualizado.
+ */
+RecommendedWebsiteService.updateOneById = async (recommendedWebsite, newContent) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const updatedRecommendedWebsite = await RecommendedWebsiteModel.findByIdAndUpdate(recommendedWebsite._id, { ...newContent });
+    if (!updatedRecommendedWebsite) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Something went wrong.'
+        }
+      }
+    } else {
+      serviceResponse.content = await RecommendedWebsiteModel.findById(recommendedWebsite._id);
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error');
+  }
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id 
+ * @returns {Array} Lista vacía.
+ */
+RecommendedWebsiteService.remove = async (_id) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const recommendedWebsiteDeleted = await RecommendedWebsiteModel.findByIdAndDelete(_id).exec();
+    if (!recommendedWebsiteDeleted) {
+        serviceResponse = {
+            success: false,
+            content: {
+                error: 'Something went wrong. Try again later.'
+            }
+        }
+    }
+
+    return serviceResponse;
+  } catch(error) {
+      throw new Error('Interal Server Error');
+  }
+}
+
+module.exports = RecommendedWebsiteService;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#EducationAreaSchema">EducationAreaSchema</a></li><li><a href="global.html#EducationAreaService">EducationAreaService</a></li><li><a href="global.html#ExhibitionRoomSchema">ExhibitionRoomSchema</a></li><li><a href="global.html#ExhibitionRoomService">ExhibitionRoomService</a></li><li><a href="global.html#ExhibitionSchema">ExhibitionSchema</a></li><li><a href="global.html#ExhibitionService">ExhibitionService</a></li><li><a href="global.html#FAQSchema">FAQSchema</a></li><li><a href="global.html#FAQService">FAQService</a></li><li><a href="global.html#RecommendationSchema">RecommendationSchema</a></li><li><a href="global.html#RecommendationService">RecommendationService</a></li><li><a href="global.html#RecommendedWebsiteSchema">RecommendedWebsiteSchema</a></li><li><a href="global.html#RecommendedWebsiteService">RecommendedWebsiteService</a></li><li><a href="global.html#SuggestionSchema">SuggestionSchema</a></li><li><a href="global.html#SuggestionService">SuggestionService</a></li><li><a href="global.html#SuggestionTypeSchema">SuggestionTypeSchema</a></li><li><a href="global.html#SuggestionTypeService">SuggestionTypeService</a></li><li><a href="global.html#UserSchema">UserSchema</a></li><li><a href="global.html#UserService">UserService</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Fri Jan 29 2021 16:02:49 GMT-0600 (GMT-06:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

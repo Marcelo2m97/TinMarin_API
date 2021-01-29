@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: services/Recommendation.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: services/Recommendation.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const RecommendationModel = require('./../models/Recommendation');
+
+/**
+ * Este objeto contiene las funciones del servicio de recomendaciones.
+ */
+const RecommendationService = {};
+
+/**
+ * 
+ * @function
+ * @param {string} title
+ * @param {Array} description
+ * @param {Array} steps
+ * @param {string} source
+ * @param {string} image
+ * @returns {Object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
+RecommendationService.verifyContent = ({ title, description, steps, source, image }) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  };
+
+  if (!title || !description || !steps || !source || !image) {
+    serviceResponse = {
+      success: false,
+      content: {
+        error: 'Missing required field.'
+      }
+    };
+  }
+
+  return serviceResponse;
+}
+
+/**
+ * 
+ * @function
+ * @param {string} title
+ * @param {Array} description
+ * @param {Array} steps
+ * @param {string} source
+ * @param {string} image
+ * @returns {Object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
+RecommendationService.verifyUpdate = ({ title, description, steps, source, image }) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  if (!title &amp;&amp; !description &amp;&amp; !steps&amp;&amp; !source &amp;&amp; !image) {
+    serviceResponse = {
+      success: false,
+      content: {
+        error: 'No changes to make.'
+      }
+    }
+
+    return serviceResponse;
+  }
+
+  if (title) serviceResponse.content.title = title;
+  if (description) serviceResponse.content.description = description;
+  if (source) serviceResponse.content.source = source;
+  if (image) serviceResponse.content.image = image;
+
+  return serviceResponse;
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} title
+ * @param {Array} description
+ * @param {Array} steps
+ * @param {string} source
+ * @param {string} image
+ * @returns {Object} La recomendación creada.
+ */
+RecommendationService.create = async ({ title, description, steps, source, image }) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  };
+
+  const recommendation = new RecommendationModel({
+    title,
+    description,
+    steps,
+    source,
+    image
+  });
+  try {
+    const recommendationSaved = await recommendation.save();
+    if (!recommendationSaved) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Recommendation could not be saved.'
+        }
+      };
+    } else {
+      serviceResponse.content = recommendationSaved;
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error.');
+  }
+
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} title
+ * @returns {Object} La recomendación con el título especificado.
+ */
+RecommendationService.findByTitle = async ({ title }) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  };
+
+  try {
+    const recommendation = await RecommendationModel.findOne({ title: title }).exec();
+    if (!recommendation) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Recommendation not found.'
+        }
+      }
+    } else {
+      serviceResponse.content = recommendation;
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error("Internal Server Error.");
+  }
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @returns {Array} Lista con las recomendaciones existentes
+ */
+RecommendationService.findAll = async () => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  };
+
+  try {
+    const recommendations = await RecommendationModel.find();
+    if (!recommendations) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'No recommendations found.'
+        }
+      };
+    } else {
+      serviceResponse.content = recommendations;
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error.');
+  }
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id
+ * @returns {Object} La recomendación con el _id especificado.
+ */
+RecommendationService.findOneById = async (_id) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+      const recommendation = await RecommendationModel.findOne({ _id: _id }).exec();
+      if (!recommendation) {
+          serviceResponse = {
+              success: false,
+              content: {
+                  error: 'Exhibition not found.'
+              }
+          }
+      } else {
+          serviceResponse.content = recommendation;
+      }
+
+      return serviceResponse;
+  } catch(error) {
+      throw new Error('Internal Server Error');
+  }
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @param {object} recommendation
+ * @param {object} newContent
+ * @returns {object} La recomendación actualizada.
+ */
+RecommendationService.updateOneById = async (recommendation, newContent) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const updatedRecommendation = await RecommendationModel.findByIdAndUpdate(recommendation._id, { ...newContent })
+    if (!updatedRecommendation) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Something went wrong.'
+        }
+      }
+    } else {
+      serviceResponse.content = await RecommendationModel.findById(recommendation._id);
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error');
+  }
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id 
+ * @returns {Array} Lista vacía.
+ */
+RecommendationService.remove = async (_id) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const recommendationDeleted = await RecommendationModel.findByIdAndDelete(_id).exec();
+    if (!recommendationDeleted) {
+        serviceResponse = {
+            success: false,
+            content: {
+                error: 'Something went wrong. Try again later.'
+            }
+        }
+    }
+
+    return serviceResponse;
+  } catch(error) {
+      throw new Error('Interal Server Error');
+  }
+}
+
+module.exports = RecommendationService;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#EducationAreaSchema">EducationAreaSchema</a></li><li><a href="global.html#EducationAreaService">EducationAreaService</a></li><li><a href="global.html#ExhibitionRoomSchema">ExhibitionRoomSchema</a></li><li><a href="global.html#ExhibitionRoomService">ExhibitionRoomService</a></li><li><a href="global.html#ExhibitionSchema">ExhibitionSchema</a></li><li><a href="global.html#ExhibitionService">ExhibitionService</a></li><li><a href="global.html#FAQSchema">FAQSchema</a></li><li><a href="global.html#FAQService">FAQService</a></li><li><a href="global.html#RecommendationSchema">RecommendationSchema</a></li><li><a href="global.html#RecommendationService">RecommendationService</a></li><li><a href="global.html#RecommendedWebsiteSchema">RecommendedWebsiteSchema</a></li><li><a href="global.html#RecommendedWebsiteService">RecommendedWebsiteService</a></li><li><a href="global.html#SuggestionSchema">SuggestionSchema</a></li><li><a href="global.html#SuggestionService">SuggestionService</a></li><li><a href="global.html#SuggestionTypeSchema">SuggestionTypeSchema</a></li><li><a href="global.html#SuggestionTypeService">SuggestionTypeService</a></li><li><a href="global.html#UserSchema">UserSchema</a></li><li><a href="global.html#UserService">UserService</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Fri Jan 29 2021 16:02:49 GMT-0600 (GMT-06:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,7 +1,18 @@
 const RecommendedWebsiteModel = require('./../models/RecommendedWebsite');
 
+/**
+ * Este objeto contiene las funciones del servicio de sitios web recomendados.
+ */
 const RecommendedWebsiteService = {};
 
+/**
+ * 
+ * @function
+ * @param {string} url
+ * @param {string} images
+ * @param {string} title 
+ * @returns {Object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
 RecommendedWebsiteService.verifyFields = ({ url, image, title }) => {
   let serviceResponse = {
     success: true,
@@ -20,6 +31,14 @@ RecommendedWebsiteService.verifyFields = ({ url, image, title }) => {
   return serviceResponse;
 }
 
+/**
+ * 
+ * @function
+ * @param {string} url
+ * @param {string} images
+ * @param {string} title 
+ * @returns {Object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
 RecommendedWebsiteService.verifyUpdate = ({ url, image, title }) => {
   let serviceResponse = {
     success: true,
@@ -44,6 +63,15 @@ RecommendedWebsiteService.verifyUpdate = ({ url, image, title }) => {
   return serviceResponse;
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} url
+ * @param {string} image
+ * @param {string} title
+ * @returns {Object} El sitio web recomendado creado.
+ */
 RecommendedWebsiteService.create = async ({ url, image, title }) => {
   let serviceResponse = {
     success: true,
@@ -74,6 +102,12 @@ RecommendedWebsiteService.create = async ({ url, image, title }) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @returns {Array} Lista con los sitios web recomendados existentes
+ */
 RecommendedWebsiteService.findAll = async () => {
   let serviceResponse = {
     success: true,
@@ -99,6 +133,13 @@ RecommendedWebsiteService.findAll = async () => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id
+ * @returns {Object} El sitio web recomendado con el _id especificado.
+ */
 RecommendedWebsiteService.findOneById = async (_id) => {
   let serviceResponse = {
     success: true,
@@ -124,6 +165,14 @@ RecommendedWebsiteService.findOneById = async (_id) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {object} recommendedWebsite
+ * @param {object} newContent
+ * @returns {object} El sitio web recomendado actualizado.
+ */
 RecommendedWebsiteService.updateOneById = async (recommendedWebsite, newContent) => {
   let serviceResponse = {
     success: true,
@@ -149,6 +198,13 @@ RecommendedWebsiteService.updateOneById = async (recommendedWebsite, newContent)
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id 
+ * @returns {Array} Lista vacía.
+ */
 RecommendedWebsiteService.remove = async (_id) => {
   let serviceResponse = {
     success: true,

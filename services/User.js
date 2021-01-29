@@ -3,8 +3,18 @@ const Crypto = require('crypto');
 
 const passwordRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,32})');
 
+/**
+ * Este objeto contiene las funciones del servicio de usuarios.
+ */
 const UserService = {}
 
+/**
+ * 
+ * @function
+ * @param {string} username
+ * @param {string} password
+ * @returns {object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
 UserService.verifyRegisterFields = ({ username, password }) => {
   let serviceResponse = {
     success: true,
@@ -34,6 +44,13 @@ UserService.verifyRegisterFields = ({ username, password }) => {
   return serviceResponse;
 }
 
+/**
+ * 
+ * @function
+ * @param {string} username
+ * @param {string} password
+ * @returns {object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
 UserService.verifyLoginFields = ({ username, password }) => {
   let serviceResponse = {
     success: true,
@@ -53,6 +70,13 @@ UserService.verifyLoginFields = ({ username, password }) => {
   return serviceResponse;
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} username
+ * @returns {object} Usuario con el nombre de usuario especificado.
+ */
 UserService.findOneUsername = async (username) => {
   let serviceResponse = {
     success: true,
@@ -78,6 +102,14 @@ UserService.findOneUsername = async (username) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} username
+ * @param {string} password
+ * @returns {object} El usuario registrado.
+ */
 UserService.register = async ({ username, password }) => {
   let serviceResponse = {
     success: true,
@@ -104,6 +136,14 @@ UserService.register = async ({ username, password }) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} username
+ * @param {string} password
+ * @returns {string} token.
+ */
 UserService.login = (user, password) => {
   let serviceResponse = {
     success: true,

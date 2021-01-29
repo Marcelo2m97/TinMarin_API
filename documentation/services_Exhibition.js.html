@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: services/Exhibition.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: services/Exhibition.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const ExhibitionModel = require('./../models/Exhibition');
+
+/**
+ * Este objeto contiene las funciones del servicio de exhibiciones.
+ */
+const ExhibitionService = {};
+
+/**
+ * 
+ * @function
+ * @param {string} name
+ * @param {string} description
+ * @param {Array} images
+ * @param {Array} educationArea 
+ * @param {number} minimunAge
+ * @param {number} maximumAge
+ * @param {number} duration
+ * @param {number} capacity
+ * @returns {Object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
+ExhibitionService.verifyFields = ({ name, description, images, educationArea, minimunAge, maximumAge, duration, capacity }) => {
+  let serviceResponse = {
+    success: true,
+    content: {
+      message: ""
+    }
+  }
+
+  if (!name || !description || !images || !educationArea || !minimunAge || !maximumAge || !duration || !capacity) {
+    serviceResponse = {
+      success: false,
+      content: {
+        error: "Missing required fields."
+      }
+    }
+  }
+
+  return serviceResponse;
+}
+
+/**
+ * 
+ * @function
+ * @param {string} name
+ * @param {string} lowercaseName
+ * @param {string} description
+ * @param {Array} images
+ * @param {Array} sponsorName
+ * @param {Array} sponsorLogo
+ * @param {Array} educationArea 
+ * @param {number} minimunAge
+ * @param {number} maximumAge
+ * @param {number} duration
+ * @param {number} capacity
+ * @param {string} curiousInfo
+ * @returns {Object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
+ExhibitionService.verifyUpdate = ({ name, lowercaseName, description, images, sponsorName, sponsorLogo, educationArea, minimunAge, maximumAge, duration, capacity, curiousInfo }) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  if (!name &amp;&amp; !lowercaseName &amp;&amp; !description &amp;&amp; !images &amp;&amp; !sponsorName &amp;&amp; !sponsorLogo &amp;&amp; !educationArea &amp;&amp; !minimunAge &amp;&amp; !maximumAge &amp;&amp; !duration &amp;&amp; !capacity &amp;&amp; !curiousInfo) {
+    serviceResponse = {
+      success: false,
+      content: {
+        error: 'No changes to make.'
+      }
+    }
+
+    return serviceResponse;
+  }
+
+  if (name) serviceResponse.content.name = name;
+  if (lowercaseName) serviceResponse.content.lowercaseName = lowercaseName;
+  if (description) serviceResponse.content.description = description;
+  if (images) serviceResponse.content.images = images;
+  if (sponsorName) serviceResponse.content.sponsorName = sponsorName;
+  if (sponsorLogo) serviceResponse.content.sponsorLogo = sponsorLogo;
+  if (educationArea) serviceResponse.content.educationArea = educationArea;
+  if (minimunAge) serviceResponse.content.minimunAge = minimunAge;
+  if (maximumAge) serviceResponse.content.maximumAge = maximumAge;
+  if (duration) serviceResponse.content.duration = duration;
+  if (capacity) serviceResponse.content.capacity = capacity;
+  if (curiousInfo) serviceResponse.content.curiousInfo = curiousInfo;
+
+  return serviceResponse;
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} name
+ * @param {string} description
+ * @param {Array} images
+ * @param {Array} sponsorName
+ * @param {Array} sponsorLogo
+ * @param {Array} educationArea 
+ * @param {number} minimunAge
+ * @param {number} maximumAge
+ * @param {number} duration
+ * @param {number} capacity
+ * @param {string} curiousInfo
+ * @returns {Object} La exhibición creada.
+ */
+ExhibitionService.create = async ({ name, description, images, sponsorName, sponsorLogo, educationArea, minimunAge, maximumAge, duration, capacity, curiousInfo }) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  const lowercaseName = name.toLowerCase();
+  try {
+    const newExhibition = new ExhibitionModel({
+      name,
+      lowercaseName,
+      description,
+      images,
+      sponsorName,
+      sponsorLogo,
+      educationArea,
+      minimunAge,
+      maximumAge,
+      duration,
+      capacity,
+      curiousInfo
+    });
+
+    const newExhibitionWasCreated = await newExhibition.save();
+    if (!newExhibitionWasCreated) {
+      serviceResponse = {
+        success: false,
+          content: {
+            error: "Exhibition could not be created."
+          }
+        }
+    } else {
+      serviceResponse.content = newExhibitionWasCreated;
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error("Internal Server Error.")
+  }
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} name
+ * @returns {Object} La exhibición con el nombre especificado.
+ */
+ExhibitionService.findOneByName = async ({ name }) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try{
+    const exhibition = await ExhibitionModel.findOne({ name: name }).exec();
+    if (!exhibition) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Exhibition not found.'
+        }
+      }
+    } else {
+      serviceResponse.content = exhibition;
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error.')
+  }
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @returns {Array} Lista de exhibiciones existentes.
+ */
+ExhibitionService.getAll = async() => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const exhibitions = await ExhibitionModel.find();
+    if (!exhibitions) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'No exhibition found.'
+        }
+      }
+    } else {
+      serviceResponse.content = exhibitions;
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error')
+  }
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} name
+ * @returns {Object} La exhibición con el nombre especificado.
+ */
+ExhibitionService.findByName = async (name) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+  const lowercaseName = name.toLowerCase();
+  try {
+    const exhibitions = await ExhibitionModel.find({ lowercaseName: { $regex: lowercaseName } });
+    if (!exhibitions) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'No exhibition found with the specified name.'
+        }
+      }
+    } else {
+      serviceResponse.content = exhibitions;
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error.');
+  }
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id
+ * @returns {Object} La exhibición con el _id especificado.
+ */
+ExhibitionService.findOneById = async (_id) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const exhibition = await ExhibitionModel.findOne({ _id: _id }).exec();
+    if (!exhibition) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Exhibition not found.'
+        }
+      }
+    } else {
+      serviceResponse.content = exhibition;
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error');
+  }
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @param {object} exbhition
+ * @param {object} newContent
+ * @returns {object} La exhibición actualizada.
+ */
+ExhibitionService.updateOneById = async (exhibition, newContent) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const updatedExhibition = await ExhibitionModel.findByIdAndUpdate(exhibition._id, { ...newContent });
+    if (!updatedExhibition) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Something went wrong.'
+        }
+      }
+    } else {
+      serviceResponse.content = await ExhibitionModel.findById(exhibition._id).exec();
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error');
+  }
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id 
+ * @returns {Array} Lista vacía.
+ */
+ExhibitionService.remove = async (_id) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const exhibitionDeleted = await ExhibitionModel.findByIdAndDelete(_id).exec();
+    if (!exhibitionDeleted) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Something went wrong. Try again later.'
+        }
+      }
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Interal Server Error');
+  }
+
+}
+
+module.exports = ExhibitionService;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#EducationAreaSchema">EducationAreaSchema</a></li><li><a href="global.html#EducationAreaService">EducationAreaService</a></li><li><a href="global.html#ExhibitionRoomSchema">ExhibitionRoomSchema</a></li><li><a href="global.html#ExhibitionRoomService">ExhibitionRoomService</a></li><li><a href="global.html#ExhibitionSchema">ExhibitionSchema</a></li><li><a href="global.html#ExhibitionService">ExhibitionService</a></li><li><a href="global.html#FAQSchema">FAQSchema</a></li><li><a href="global.html#FAQService">FAQService</a></li><li><a href="global.html#RecommendationSchema">RecommendationSchema</a></li><li><a href="global.html#RecommendationService">RecommendationService</a></li><li><a href="global.html#RecommendedWebsiteSchema">RecommendedWebsiteSchema</a></li><li><a href="global.html#RecommendedWebsiteService">RecommendedWebsiteService</a></li><li><a href="global.html#SuggestionSchema">SuggestionSchema</a></li><li><a href="global.html#SuggestionService">SuggestionService</a></li><li><a href="global.html#SuggestionTypeSchema">SuggestionTypeSchema</a></li><li><a href="global.html#SuggestionTypeService">SuggestionTypeService</a></li><li><a href="global.html#UserSchema">UserSchema</a></li><li><a href="global.html#UserService">UserService</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Fri Jan 29 2021 16:02:49 GMT-0600 (GMT-06:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

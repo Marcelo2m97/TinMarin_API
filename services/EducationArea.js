@@ -1,7 +1,16 @@
 const EducationAreaModel = require('./../models/EducationArea');
 
+/**
+ * Este objeto contiene las funciones del servicio de áreas de educación.
+ */
 const EducationAreaService = {};
 
+/**
+ * 
+ * @function
+ * @param {string} name
+ * @returns {Object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
 EducationAreaService.verifyFields = ({ name }) => {
   let serviceResponse = {
     success: true,
@@ -20,6 +29,12 @@ EducationAreaService.verifyFields = ({ name }) => {
   return serviceResponse;
 }
 
+/**
+ * 
+ * @function
+ * @param {string} name 
+ * @returns {Object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
 EducationAreaService.verifyUpdate = ({ name }) => {
   let serviceResponse = {
     success: true,
@@ -42,6 +57,13 @@ EducationAreaService.verifyUpdate = ({ name }) => {
   return serviceResponse;
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} name
+ * @returns {Object} El área de educación creada.
+ */
 EducationAreaService.create = async ({ name }) => {
   let serviceResponse = {
     success: true,
@@ -68,6 +90,13 @@ EducationAreaService.create = async ({ name }) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} name
+ * @returns {Object} El área de educación con el nombre especificado.
+ */
 EducationAreaService.findOneByName = async ({ name }) => {
   let serviceResponse = {
     success: true,
@@ -93,6 +122,12 @@ EducationAreaService.findOneByName = async ({ name }) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @returns {Array} Lista con los  existentes
+ */
 EducationAreaService.findAll = async () => {
   let serviceResponse = {
     success: true,
@@ -117,6 +152,13 @@ EducationAreaService.findAll = async () => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id
+ * @returns {Object} El área de educación con el _id especificado.
+ */
 EducationAreaService.findOneById = async (_id) => {
   let serviceResponse = {
     success: true,
@@ -141,6 +183,14 @@ EducationAreaService.findOneById = async (_id) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {object} educationArea
+ * @param {object} newContent
+ * @returns {object} El área de educación actualizada.
+ */
 EducationAreaService.updateOneById = async (educationArea, newContent) => {
   let serviceResponse = {
     success: true,
@@ -166,6 +216,13 @@ EducationAreaService.updateOneById = async (educationArea, newContent) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id 
+ * @returns {Array} Lista vacía.
+ */
 EducationAreaService.remove = async (_id) => {
   let serviceResponse = {
     success: true,

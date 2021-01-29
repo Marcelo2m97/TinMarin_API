@@ -1,7 +1,16 @@
 const SuggestionTypeModel = require('./../models/SuggestionType');
 
+/**
+ * Este objeto contiene las funciones del servicio de tipos de sugerencia.
+ */
 const SuggestionTypeService = {}
 
+/**
+ * 
+ * @function
+ * @param {string} name
+ * @returns {Object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
 SuggestionTypeService.verifyFields = ({ name }) => {
   let serviceResponse = {
     success: true,
@@ -24,6 +33,12 @@ SuggestionTypeService.verifyFields = ({ name }) => {
   return serviceResponse;
 }
 
+/**
+ * 
+ * @function
+ * @param {string} name
+ * @returns {Object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
 SuggestionTypeService.verifyUpdate = ({ name }) => {
   let serviceResponse = {
     success: true,
@@ -46,6 +61,13 @@ SuggestionTypeService.verifyUpdate = ({ name }) => {
   return serviceResponse;
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} name
+ * @returns {Object} El tipo de sugerencia creada.
+ */
 SuggestionTypeService.create = async ({ name }) => {
   let serviceResponse = {
     success: true,
@@ -72,6 +94,13 @@ SuggestionTypeService.create = async ({ name }) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} name
+ * @returns {Object} El tipo de sugerencia con el nombre especificado.
+ */
 SuggestionTypeService.findOneByName = async ({ name }) => {
   let serviceResponse = {
     success: true,
@@ -97,6 +126,12 @@ SuggestionTypeService.findOneByName = async ({ name }) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @returns {Array} Lista con los tipos de sugerencias existentes
+ */
 SuggestionTypeService.findAll = async () => {
   let serviceResponse = {
     success: true,
@@ -119,9 +154,15 @@ SuggestionTypeService.findAll = async () => {
   } catch(error) {
     throw new Error('Internal Server Error.')
   }
-
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id
+ * @returns {Object} El tipo de sugerencia con el _id especificado.
+ */
 SuggestionTypeService.findOneById = async (_id) => {
   let serviceResponse = {
     success: true,
@@ -147,6 +188,14 @@ SuggestionTypeService.findOneById = async (_id) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {object} suggestionType
+ * @param {object} newContent
+ * @returns {object} El tipo de sugerencia actualizada.
+ */
 SuggestionTypeService.updateOneById = async (suggestionType, newContent) => {
   let serviceResponse = {
     success: true,
@@ -172,6 +221,13 @@ SuggestionTypeService.updateOneById = async (suggestionType, newContent) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id 
+ * @returns {Array} Lista vacía.
+ */
 SuggestionTypeService.remove = async (_id) => {
   let serviceResponse = {
     success: true,

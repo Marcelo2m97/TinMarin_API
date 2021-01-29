@@ -1,7 +1,23 @@
 const ExhibitionModel = require('./../models/Exhibition');
 
+/**
+ * Este objeto contiene las funciones del servicio de exhibiciones.
+ */
 const ExhibitionService = {};
 
+/**
+ * 
+ * @function
+ * @param {string} name
+ * @param {string} description
+ * @param {Array} images
+ * @param {Array} educationArea 
+ * @param {number} minimunAge
+ * @param {number} maximumAge
+ * @param {number} duration
+ * @param {number} capacity
+ * @returns {Object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
 ExhibitionService.verifyFields = ({ name, description, images, educationArea, minimunAge, maximumAge, duration, capacity }) => {
   let serviceResponse = {
     success: true,
@@ -22,6 +38,23 @@ ExhibitionService.verifyFields = ({ name, description, images, educationArea, mi
   return serviceResponse;
 }
 
+/**
+ * 
+ * @function
+ * @param {string} name
+ * @param {string} lowercaseName
+ * @param {string} description
+ * @param {Array} images
+ * @param {Array} sponsorName
+ * @param {Array} sponsorLogo
+ * @param {Array} educationArea 
+ * @param {number} minimunAge
+ * @param {number} maximumAge
+ * @param {number} duration
+ * @param {number} capacity
+ * @param {string} curiousInfo
+ * @returns {Object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
 ExhibitionService.verifyUpdate = ({ name, lowercaseName, description, images, sponsorName, sponsorLogo, educationArea, minimunAge, maximumAge, duration, capacity, curiousInfo }) => {
   let serviceResponse = {
     success: true,
@@ -55,6 +88,23 @@ ExhibitionService.verifyUpdate = ({ name, lowercaseName, description, images, sp
   return serviceResponse;
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} name
+ * @param {string} description
+ * @param {Array} images
+ * @param {Array} sponsorName
+ * @param {Array} sponsorLogo
+ * @param {Array} educationArea 
+ * @param {number} minimunAge
+ * @param {number} maximumAge
+ * @param {number} duration
+ * @param {number} capacity
+ * @param {string} curiousInfo
+ * @returns {Object} La exhibición creada.
+ */
 ExhibitionService.create = async ({ name, description, images, sponsorName, sponsorLogo, educationArea, minimunAge, maximumAge, duration, capacity, curiousInfo }) => {
   let serviceResponse = {
     success: true,
@@ -96,6 +146,13 @@ ExhibitionService.create = async ({ name, description, images, sponsorName, spon
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} name
+ * @returns {Object} La exhibición con el nombre especificado.
+ */
 ExhibitionService.findOneByName = async ({ name }) => {
   let serviceResponse = {
     success: true,
@@ -121,6 +178,12 @@ ExhibitionService.findOneByName = async ({ name }) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @returns {Array} Lista de exhibiciones existentes.
+ */
 ExhibitionService.getAll = async() => {
   let serviceResponse = {
     success: true,
@@ -146,6 +209,13 @@ ExhibitionService.getAll = async() => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} name
+ * @returns {Object} La exhibición con el nombre especificado.
+ */
 ExhibitionService.findByName = async (name) => {
   let serviceResponse = {
     success: true,
@@ -171,6 +241,13 @@ ExhibitionService.findByName = async (name) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id
+ * @returns {Object} La exhibición con el _id especificado.
+ */
 ExhibitionService.findOneById = async (_id) => {
   let serviceResponse = {
     success: true,
@@ -196,6 +273,14 @@ ExhibitionService.findOneById = async (_id) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {object} exbhition
+ * @param {object} newContent
+ * @returns {object} La exhibición actualizada.
+ */
 ExhibitionService.updateOneById = async (exhibition, newContent) => {
   let serviceResponse = {
     success: true,
@@ -221,6 +306,13 @@ ExhibitionService.updateOneById = async (exhibition, newContent) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id 
+ * @returns {Array} Lista vacía.
+ */
 ExhibitionService.remove = async (_id) => {
   let serviceResponse = {
     success: true,

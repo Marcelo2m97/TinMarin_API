@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: services/ExhibitionRoom.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: services/ExhibitionRoom.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const ExhibitionRoomModel = require('./../models/ExhibitionRoom');
+
+/**
+ * Este objeto contiene las funciones del servicio de cuartos de exhibiciones.
+ */
+const ExhibitionRoomService = {};
+
+/**
+ * 
+ * @function
+ * @param {string} roomCode
+ * @param {string} exhibitions
+ * @returns {Object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
+ExhibitionRoomService.verifyFields = ({ roomCode, exhibitions }) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  const roomCodeRegExp = new RegExp('^[a-zA-Z0-9]*$', 'g');
+
+  if (!roomCode || !exhibitions) {
+    serviceResponse = {
+      success: false,
+      content: {
+        error: 'Missing required fields. Request needs a room code and a list of exhibitions.'
+      }
+    };
+  }
+  if (!roomCodeRegExp.test(roomCode)) {
+    serviceResponse = {
+      success: false,
+      content: {
+        error: 'Room code must not have spaces between words, punctuation or special characters.'
+      }
+    }
+  }
+
+  return serviceResponse;
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} roomCode
+ * @param {Array} exhibitions
+ * @returns {Object} El cuarto de exhibición creado.
+ */
+ExhibitionRoomService.create = async ({ roomCode, exhibitions }) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  const exhibitionRoom = new ExhibitionRoomModel({
+    roomCode,
+    exhibitions
+  });
+  try {
+    const exhibitionRoomCreated = await exhibitionRoom.save();
+    if (!exhibitionRoomCreated) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'Exhibition room could not be created.'
+        }
+      };
+    } else {
+      serviceResponse.content = exhibitionRoomCreated;
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error(error);
+  }
+
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} roomCode
+ * @returns {Object} El cuarto de exhibición con el código de cuarto especificado.
+ */
+ExhibitionRoomService.findOneExhibitionRoomByRoomCode = async (roomCode) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const exhibitionRoom = await ExhibitionRoomModel.findOne({ roomCode: roomCode }).populate({ 
+      path: 'exhibitions',
+      model: 'Exhibition'
+    }).exec();
+    if (!exhibitionRoom) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'No exhibition room found with specified exhibition code.'
+        }
+      }
+      return serviceResponse;
+    } else {
+      serviceResponse.content = exhibitionRoom;
+      return serviceResponse;
+    }
+  } catch(error) {
+    throw new Error('Internal Server Error.')
+  }
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @returns {Array} Lista con los cuartos de exhibición existentes
+ */
+ExhibitionRoomService.findAll = async () => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+    const exhibitionRooms = await ExhibitionRoomModel.find().populate({ 
+      path: 'exhibitions',
+      model: 'Exhibition'
+    });
+    if (!exhibitionRooms) {
+      serviceResponse = {
+        success: false,
+        content: {
+          error: 'No exhibition room was found.'
+        }
+      }
+    } else {
+      serviceResponse.content = exhibitionRooms;
+    }
+
+    return serviceResponse;
+  } catch(error) {
+    throw new Error('Internal Server Error.')
+  }
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id
+ * @returns {Object} El cuarto de exhibición con el _id especificado.
+ */
+ExhibitionRoomService.findOneById = async (_id) => {
+  let serviceResponse = {
+    success: true,
+    content: {}
+  }
+
+  try {
+      const exhibitionRoom = await ExhibitionRoomModel.findOne({ _id: _id }).exec();
+      if (!exhibitionRoom) {
+          serviceResponse = {
+              success: false,
+              content: {
+                  error: 'Exhibition not found.'
+              }
+          }
+      } else {
+          serviceResponse.content = exhibitionRoom;
+      }
+
+      return serviceResponse;
+  } catch(error) {
+      throw new Error('Internal Server Error');
+  }
+}
+
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id 
+ * @returns {Array} Lista vacía.
+ */
+ExhibitionRoomService.remove = async (_id) => {
+  let serviceResponse = {
+      success: true,
+      content: {}
+  }
+
+  try {
+      const exhibitionRoomDeleted = await ExhibitionRoomModel.findByIdAndDelete(_id).exec();
+      if (!exhibitionRoomDeleted) {
+          serviceResponse = {
+              success: false,
+              content: {
+                  error: 'Something went wrong. Try again later.'
+              }
+          }
+      }
+
+      return serviceResponse;
+  } catch(error) {
+      throw new Error('Interal Server Error');
+  }
+
+}
+
+module.exports = ExhibitionRoomService;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#EducationAreaSchema">EducationAreaSchema</a></li><li><a href="global.html#EducationAreaService">EducationAreaService</a></li><li><a href="global.html#ExhibitionRoomSchema">ExhibitionRoomSchema</a></li><li><a href="global.html#ExhibitionRoomService">ExhibitionRoomService</a></li><li><a href="global.html#ExhibitionSchema">ExhibitionSchema</a></li><li><a href="global.html#ExhibitionService">ExhibitionService</a></li><li><a href="global.html#FAQSchema">FAQSchema</a></li><li><a href="global.html#FAQService">FAQService</a></li><li><a href="global.html#RecommendationSchema">RecommendationSchema</a></li><li><a href="global.html#RecommendationService">RecommendationService</a></li><li><a href="global.html#RecommendedWebsiteSchema">RecommendedWebsiteSchema</a></li><li><a href="global.html#RecommendedWebsiteService">RecommendedWebsiteService</a></li><li><a href="global.html#SuggestionSchema">SuggestionSchema</a></li><li><a href="global.html#SuggestionService">SuggestionService</a></li><li><a href="global.html#SuggestionTypeSchema">SuggestionTypeSchema</a></li><li><a href="global.html#SuggestionTypeService">SuggestionTypeService</a></li><li><a href="global.html#UserSchema">UserSchema</a></li><li><a href="global.html#UserService">UserService</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Fri Jan 29 2021 16:02:49 GMT-0600 (GMT-06:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

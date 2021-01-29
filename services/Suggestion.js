@@ -1,7 +1,17 @@
 const SuggestionModel = require('./../models/Suggestion');
 
+/**
+ * Este objeto contiene las funciones del servicio de sugerencia.
+ */
 const SuggestionService = {}
 
+/**
+ * 
+ * @function
+ * @param {string} suggestionType
+ * @param {string} suggestion
+ * @returns {Object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
 SuggestionService.verifyFields = ({ suggestionType, suggestion }) => {
   let serviceResponse = {
     success: true,
@@ -22,6 +32,13 @@ SuggestionService.verifyFields = ({ suggestionType, suggestion }) => {
   return serviceResponse;
 }
 
+/**
+ * 
+ * @function
+ * @param {string} suggestionType
+ * @param {string} suggestion
+ * @returns {Object} La sugerencia creada.
+ */
 SuggestionService.create = async ({ suggestionType, suggestion }) => {
   let serviceResponse = {
     success: true,
@@ -51,6 +68,12 @@ SuggestionService.create = async ({ suggestionType, suggestion }) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @returns {Array} Lista con las sugerencias existentes.
+ */
 SuggestionService.findAll = async () => {
   let serviceResponse = {
     success: true,
@@ -75,6 +98,13 @@ SuggestionService.findAll = async () => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id
+ * @returns {Object} La sugerencia con el _id especificado.
+ */
 SuggestionService.findOneById = async (_id) => {
   let serviceResponse = {
     success: true,
@@ -98,6 +128,13 @@ SuggestionService.findOneById = async (_id) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id 
+ * @returns {Array} Lista vacía.
+ */
 SuggestionService.remove = async (_id) => {
   let serviceResponse = {
     success: true,

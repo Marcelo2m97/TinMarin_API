@@ -1,7 +1,17 @@
 const FAQModel = require('./../models/FAQ');
 
+/**
+ * Este objeto contiene las funciones del servicio de preguntas frecuentes.
+ */
 const FAQService = {};
 
+/**
+ * 
+ * @function
+ * @param {string} question
+ * @param {string} answer
+ * @returns {Object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
 FAQService.verifyFields = ({ question, answer }) => {
   let serviceResponse = {
     success: true,
@@ -22,6 +32,13 @@ FAQService.verifyFields = ({ question, answer }) => {
   return serviceResponse;
 }
 
+/**
+ * 
+ * @function
+ * @param {string} question
+ * @param {string} answer
+ * @returns {Object} Si la verificación es correcta returna verdadero en el elemento 'success' y falso en caso contrario.
+ */
 FAQService.verifyUpdate = ({ question, answer }) => {
   let serviceResponse = {
     success: true,
@@ -45,6 +62,14 @@ FAQService.verifyUpdate = ({ question, answer }) => {
   return serviceResponse;
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} question
+ * @param {string} answer
+ * @returns {Object} La pregunta frecuente creada.
+ */
 FAQService.create = async ({ question, answer}) => {
   let serviceResponse = {
     success: true,
@@ -74,6 +99,13 @@ FAQService.create = async ({ question, answer}) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} question
+ * @returns {Object} La pregunta frecuente con pregunta especificada.
+ */
 FAQService.findByQuestion = async ({ question }) => {
   let serviceResponse = {
     success: true,
@@ -99,6 +131,12 @@ FAQService.findByQuestion = async ({ question }) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @returns {Array} Lista con las preguntas frecuentes existentes
+ */
 FAQService.findAll = async () => {
   let serviceResponse = {
     success: true,
@@ -123,6 +161,13 @@ FAQService.findAll = async () => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id
+ * @returns {Object} La pregunta frecuente con el _id especificado.
+ */
 FAQService.findOneById = async (_id) => {
   let serviceResponse = {
       success: true,
@@ -148,6 +193,14 @@ FAQService.findOneById = async (_id) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {object} faq
+ * @param {object} newContent
+ * @returns {object} La pregunta frecuente actualizada.
+ */
 FAQService.updateOneById = async (faq, newContent) => {
   let serviceResponse = {
     success: true,
@@ -173,6 +226,13 @@ FAQService.updateOneById = async (faq, newContent) => {
   }
 }
 
+/**
+ * 
+ * @async
+ * @function
+ * @param {string} _id 
+ * @returns {Array} Lista vacía.
+ */
 FAQService.remove = async (_id) => {
   let serviceResponse = {
       success: true,
