@@ -93,7 +93,7 @@
         }
       }
     },
-    "/api/v1/private/auth/login": {
+    "/api/v1/private/auth/register": {
       "post": {
         "tags": [
           "Usuario"
