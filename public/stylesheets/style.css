@@ -1,36 +1,16 @@
-#login-container {
-  padding: 10%;
-  color: green;
+body {
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
 }
 
-.middle{
-  display: flex;
-  flex-direction: column;
-  width: 100vw;
+nav div a img {
   height: 100%;
-  justify-content: center;
+}
+
+body {
   align-items: center;
 }
 
-.flex-column{
-  display: flex;
-  flex-direction: column;
-}
-
-.display-flex{
-  display: flex;
-  justify-content: space-evenly;
-}
-
-.center-h1{
-  text-align: center;
-  margin-top: 10%;
-}
-
-.middle-v2{
-  width: 75%;
-}
-
-.mymt-15{
-  margin-top: 15%;
+#screen-picture {
+  height: 90%;
 }
