@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: models/Exhibition.js</title>
+    <title>JSDoc: Source: controllers/api/private/ExhibitionRoom.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: models/Exhibition.js</h1>
+    <h1 class="page-title">Source: controllers/api/private/ExhibitionRoom.js</h1>
 
     
 
@@ -26,64 +26,46 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+            <pre class="prettyprint source linenums"><code>const ExhibitionRoomService = require('./../../../services/ExhibitionRoom');
 
 /**
- *  ExhibitionSchema es el modelo utilizado para representar los exhibiciones del museo. Este modelo está compuesto
- *  por su nombre, su nombre en minúsculas, la descripción de la exhibición, el link de las imágenes almacenadas en
- *  firebase, el promedio de rating que tiene la aplicación, los nombres de los patrocinadores de la exhibición,
- *  las imágenes de los patrocinadores, las áreas de educación que cubre la exhibición, la edad mínima y máxima para
- *  interactuar con la exhibición en el museo, el tiempo de interacción que se tiene con la exhibición, la capacidad 
- *  de personas que pueden interactuar con la exhibición simultaneamente (sin tomar en cuenta el COVID-19) y un dato
- *  curioso de exhibición si es que lo hay.
- *  Al momento de ser creado también son incluídos campos como su id en la base de datos, fecha de creación y fecha 
- *  de modificación.
+ * Controlador utilizado para la eliminación de cuartos de exhibición
  */
-const ExhibitionSchema = new Schema({
-    name: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    lowercaseName: {
-        type: String,
-        required: true
-    },
-    description: {
-        type: String,
-        required: true
-    },
-    images: [{
-        type: String,
-        required: true
-    }],
-    rating: Number,
-    sponsorName: [{
-        type: String,
-        default: ""
-    }],
-    sponsorLogo: [String],
-    educationArea: [String],
-    minimumAge: {
-        type: Number,
-        default: 0
-    },
-    maximumAge: {
-        type: Number,
-        default: 17
-    },
-    duration: Number,
-    capacity: Number,
-    curiousInfo: {
-        type: String,
-        default: ""
-    }
-}, {
-    timestamps: true,
-});
+const ExhibitionRoomController = {};
 
-module.exports = mongoose.model("Exhibition", ExhibitionSchema);</code></pre>
+/**
+ * Eliminar exhibición
+ * Esta función verifica que el _id proveído como parámetro en la ruta sea válido,
+ * sino el servidor responde con un código 400. Si la verificación es exitosa se 
+ * procede a verificar que haya en la base de datos una exhibición con el _id indicado,
+ * si no existe el servidor responde con un código 404. Si el objeto existe en la base
+ * de datos se procede a eliminarlo, pero si la base de datos no está disponible el 
+ * serivodor responde con un código 503. En caso que la base de datos esté disponible 
+ * y la acción se completa el servidor responde con un código 204 y un objeto vacío.
+ * 
+ * @param {Object} petición realizada al servidor
+ * @param {Object} respuesta a la petición realizada
+ */
+ExhibitionRoomController.remove = async (req, res) => {
+  try {
+    const exhibitionRoom = await ExhibitionRoomService.findOneById(req.params._id);
+    if (!exhibitionRoom.success) {
+      return res.status(404).json(exhibitionRoom.content);
+    }
+    const exhibitionRoomDeleted = await ExhibitionRoomService.remove(req.params._id);
+    if (!exhibitionRoomDeleted.success) {
+      return res.status(503).json(exhibitionRoomDeleted.content);
+    }
+
+    return res.status(204).json(exhibitionRoomDeleted.content);
+  } catch(error) {
+    return res.status(500).json({
+      error: 'Internal Server Error.'
+    });
+  }
+}
+
+module.exports = ExhibitionRoomController;</code></pre>
         </article>
     </section>
 

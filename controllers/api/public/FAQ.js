@@ -1,26 +1,20 @@
 const FAQService = require('./../../../services/FAQ');
 
+/**
+ * Controlador utilizado para consultar todas las preguntas frecuentes
+ * almacenadas en la base de datos.
+ */
 const FAQController = {};
 
-FAQController.create = async (req, res) => {
-  const FAQVerified = FAQService.verifyFields(req.body);
-  if (!FAQVerified.success) {
-    return res.status(400).json(FAQVerified.content);
-  }
-  try {
-    const FAQSaved = await FAQService.create(req.body);
-    if (!FAQSaved.success) {
-      return res.status(503).json(FAQSaved.content);
-    }
-
-    return res.status(201).json(FAQSaved.content);
-  } catch(error) {
-    return res.status(500).json({
-      error: 'Internal Server Error.'
-    });
-  }
-}
-
+/**
+ * Consulta los pregutnas frecuentes
+ * Esta función consulta las preguntas frecuentes, si no hay ninguna el servidor responde
+ * con un código 404. Si hay alguno el servidor responde con un código 200 y con una
+ * cadena de objetos.
+ * 
+ * @param {Object} petición realizada al servidor
+ * @param {Object} respuesta a la petición realizada
+ */
 FAQController.findAll = async (req, res) => {
   try {
     const faqs = await FAQService.findAll();
@@ -33,25 +27,6 @@ FAQController.findAll = async (req, res) => {
     return res.status(500).json({
       error: 'Internal Server Error.'
     })
-  }
-}
-
-FAQController.remove = async (req, res) => {
-  try {
-    const faq = await FAQService.findOneById(req.params._id);
-    if (!faq.success) {
-      return res.status(404).json(faq.content);
-    }
-    const faqDeleted = await FAQService.remove(req.params._id);
-    if (!faqDeleted.success) {
-      return res.status(503).json(faqDeleted.content);
-    }
-
-    return res.status(204).json(faqDeleted.content);
-  } catch(error) {
-    return res.status(500).json({
-      error: 'Internal Server Error.'
-    });
   }
 }
 

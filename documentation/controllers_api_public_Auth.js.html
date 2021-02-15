@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: models/Exhibition.js</title>
+    <title>JSDoc: Source: controllers/api/public/Auth.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: models/Exhibition.js</h1>
+    <h1 class="page-title">Source: controllers/api/public/Auth.js</h1>
 
     
 
@@ -26,64 +26,60 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+            <pre class="prettyprint source linenums"><code>const UserService = require('../../../services/User');
+const { createToken } = require('./../../../utils/JWTUtils');
 
 /**
- *  ExhibitionSchema es el modelo utilizado para representar los exhibiciones del museo. Este modelo está compuesto
- *  por su nombre, su nombre en minúsculas, la descripción de la exhibición, el link de las imágenes almacenadas en
- *  firebase, el promedio de rating que tiene la aplicación, los nombres de los patrocinadores de la exhibición,
- *  las imágenes de los patrocinadores, las áreas de educación que cubre la exhibición, la edad mínima y máxima para
- *  interactuar con la exhibición en el museo, el tiempo de interacción que se tiene con la exhibición, la capacidad 
- *  de personas que pueden interactuar con la exhibición simultaneamente (sin tomar en cuenta el COVID-19) y un dato
- *  curioso de exhibición si es que lo hay.
- *  Al momento de ser creado también son incluídos campos como su id en la base de datos, fecha de creación y fecha 
- *  de modificación.
- */
-const ExhibitionSchema = new Schema({
-    name: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    lowercaseName: {
-        type: String,
-        required: true
-    },
-    description: {
-        type: String,
-        required: true
-    },
-    images: [{
-        type: String,
-        required: true
-    }],
-    rating: Number,
-    sponsorName: [{
-        type: String,
-        default: ""
-    }],
-    sponsorLogo: [String],
-    educationArea: [String],
-    minimumAge: {
-        type: Number,
-        default: 0
-    },
-    maximumAge: {
-        type: Number,
-        default: 17
-    },
-    duration: Number,
-    capacity: Number,
-    curiousInfo: {
-        type: String,
-        default: ""
-    }
-}, {
-    timestamps: true,
-});
+ *  Este objeto contiene las funciones del controlador  para la autenticación.
+ *  Esto son invocados mediante una ruta.
+ */ 
+const AuthController = {};
 
-module.exports = mongoose.model("Exhibition", ExhibitionSchema);</code></pre>
+/**
+ * Iniciar sesión
+ * Esta función llama inicialmente a la función que verifica los campos
+ * recibido en la petición al servidor. Si alguno de los campos no son
+ * contenidos el servidor responde a la petición con un código 400, de
+ * no ser así se revisa si no existe un usuario con el nombre de usuario
+ * que se indicó en la petición el servidor responde con un código 404
+ * sino se procede a verificar si la contraseña indicada en la petición
+ * es la misma que la que se tiene almacenada en la base de datos para
+ * usuario inidicado, si no hay coincidencia el servidor responde con
+ * un código 401, en caso que si haya coincidencia el servidor responde
+ * con un código 200 y retorna un token.
+ * 
+ * @param {Object} petición realizada al servidor
+ * @param {Object} respuesta a la petición realizada
+ */
+AuthController.login = async (req, res) => {
+  const fieldsValidation = UserService.verifyLoginFields(req.body);
+  if (!fieldsValidation.success) {
+    return res.status(400).json(fieldsValidation.content);
+  }
+  
+  try {
+    const userExists = await UserService.findOneUsername(req.body.username);
+    if (!userExists.success) {
+      return res.status(404).json(userExists.content);
+    }
+    
+    const user = userExists.content;
+    const userMatch = UserService.login(user, req.body.password);
+    if (!userMatch.success) {
+      return res.status(401).json(userMatch.content);
+    }
+    
+    return res.status(200).json({
+      token: createToken(user._id)
+    });
+  } catch(error) {
+    return res.status(500).json({
+      error: 'Internal Server Error.'
+    });
+  }
+}
+
+module.exports = AuthController;</code></pre>
         </article>
     </section>
 

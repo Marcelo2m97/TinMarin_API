@@ -1,7 +1,20 @@
 const ExhibitionService = require('./../../../services/Exhibition');
 
+/**
+ * Controlador utilizado para consultar todas las exhibiciones almacenadas
+ * en la base de datos.
+ */
 const ExhibitionController = {};
 
+/**
+ * Consulta las exhibiciones
+ * Esta función consulta las áreas de educación, si no hay ninguna el servidor responde
+ * con un código 404. Si hay alguno el servidor responde con un código 200 y con una
+ * cadena de objetos.
+ * 
+ * @param {Object} petición realizada al servidor
+ * @param {Object} respuesta a la petición realizada
+ */
 ExhibitionController.find = async (req, res) => {
   if (!req.query.name) {
     try{
@@ -33,6 +46,15 @@ ExhibitionController.find = async (req, res) => {
   }
 }
 
+/**
+ * Consulta de exhibición
+ * Esta función consulta por una exhibición en específico, si no es encontrada en el 
+ * servidor responde con un código 404. Si es encontrado en el servidor responde con
+ * un código 200 y con una el objeto.
+ * 
+ * @param {Object} petición realizada al servidor
+ * @param {Object} respuesta a la petición realizada
+ */
 ExhibitionController.findOneById = async (req, res) => {
   const { _id } = req.params;
 

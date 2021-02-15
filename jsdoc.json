@@ -1,6 +1,6 @@
 {
   "source": {
-    "include": ["models", "services"],
+    "include": ["models", "services", "controllers"],
     "includePattern": ".js$",
     "excludePattern": "(node_modules|docs)"
   },
