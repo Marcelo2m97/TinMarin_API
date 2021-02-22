@@ -49,7 +49,7 @@ const ExhibitionSchema = new Schema({
     capacity: Number,
     curiousInfo: {
         type: String,
-        default: ""
+        default: "No hay datos curiosos sobre esta exhibición"
     }
 }, {
     timestamps: true,
